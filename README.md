@@ -9,6 +9,19 @@
 3. 支持使用 GPT-4-All（第三方逆向）解析上传的文件、图片。
 4. 增加模型关联 Token 计费（可选）。
 5. MJ 版本默认调整为 v6.0。
+6. 样式大调整
+
+## 页面效果展示
+<img src="https://nineai-1313051656.cos.ap-guangzhou.myqcloud.com/haibao/chat.png" width="100%">
+<img src="https://nineai-1313051656.cos.ap-guangzhou.myqcloud.com/haibao/dark.png" width="100%">
+<img src="https://nineai-1313051656.cos.ap-guangzhou.myqcloud.com/haibao/yingyong.png" width="100%">
+<img src="https://nineai-1313051656.cos.ap-guangzhou.myqcloud.com/haibao/mj.png" width="100%">
+<img src="https://nineai-1313051656.cos.ap-guangzhou.myqcloud.com/haibao/dall-e.png" width="100%">
+<img src="https://nineai-1313051656.cos.ap-guangzhou.myqcloud.com/haibao/siweidaotu.png" width="100%">
+<img src="https://nineai-1313051656.cos.ap-guangzhou.myqcloud.com/haibao/shop.png" width="100%">
+<img src="https://nineai-1313051656.cos.ap-guangzhou.myqcloud.com/haibao/admin.png" width="100%">
+<img src="https://nineai-1313051656.cos.ap-guangzhou.myqcloud.com/haibao/user.png" width="100%">
+
 
 ## 环境准备
 
@@ -73,7 +86,7 @@
 
 ## 作者wx
 
-<img src="https://photo-1313051656.cos.ap-guangzhou.myqcloud.com/WechatIMG65.jpeg" width="300">
+<img src="https://nineai-1313051656.cos.ap-guangzhou.myqcloud.com/WechatIMG65.jpeg" width="300">
 
 
 
