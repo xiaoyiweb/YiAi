@@ -1,0 +1,70 @@
+html,
+body,
+#app {
+	height: 100%;
+}
+
+// @font-face {
+//   font-family: "nineai";
+//   src: url("//at.alicdn.com/wf/webfont/KDHmc7Mx03dG/NkbQEk5ZpA2z.woff2") format("woff2"),
+//        url("//at.alicdn.com/wf/webfont/KDHmc7Mx03dG/MG5Fkb82nDmI.woff") format("woff");
+//   font-display: swap;
+// }
+
+*{
+  font-family: consolas, Menlo, "PingFang SC", "Microsoft YaHei", sans-serif;
+}
+
+body {
+	padding-bottom: constant(safe-area-inset-bottom);
+	padding-bottom: env(safe-area-inset-bottom);
+}
+
+
+
+
+* :focus {
+	outline: none;
+}
+
+.tem{
+	// .n-slider .n-slider-rail{
+	// 	width: 4px !important;
+	// }
+
+	.n-slider-rail__fill{
+		width: 4px;
+	}
+
+	.n-slider.n-slider--vertical .n-slider-rail .n-slider-rail__fill{
+		left: -2px;
+	}
+
+}
+::selection {
+	color: #fff;
+	background: #798aae;
+	}
+
+
+.ele-drag{
+	-webkit-app-region: drag;
+	// background-color: red;
+}
+
+
+// 自动移滚动条样式
+::-webkit-scrollbar{
+  width: 3px;
+  height: 3px;
+}
+// 滑块部分
+::-webkit-scrollbar-thumb{
+  border-radius: 1em;
+  background-color: rgba(50,50,50,.3);
+}
+// 辊道部分
+::-webkit-scrollbar-track{
+  border-radius: 1em;
+  background-color: rgba(50,50,50,.1);
+}

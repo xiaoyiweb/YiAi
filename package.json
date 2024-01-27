@@ -1,0 +1,49 @@
+{
+  "name": "nine-ai",
+  "version": "1.0.0",
+  "description": "使用 Nestjs 和 Vue3 搭建的 AIGC 生态社区 持续集成AI能力到社区之中",
+  "main": "index.js",
+  "author": "longyanjiang",
+  "keywords": ["ChatGpt", "AIGC", "AI"],
+  "dependencies": {
+    "eslint-config-prettier": "^8.8.0",
+    "eslint-plugin-antfu": "^0.35.3",
+    "eslint": "^8.39.0",
+    "eslint-plugin-es": "^4.1.0",
+    "eslint-module-utils": "^2.8.0",
+    "eslint-import-resolver-node": "^0.3.7",
+    "eslint-plugin-eslint-comments": "^3.2.0",
+    "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-n": "^15.7.0",
+    "eslint-plugin-jsonc": "^2.7.0",
+    "eslint-plugin-html": "^7.1.0",
+    "eslint-plugin-promise": "^6.1.1",
+    "eslint-plugin-jest": "^27.2.1",
+    "eslint-plugin-no-only-tests": "^3.1.0",
+    "eslint-plugin-unicorn": "^45.0.2",
+    "eslint-plugin-markdown": "^3.0.0",
+    "eslint-plugin-unused-imports": "^2.0.0",
+    "eslint-rule-composer": "^0.3.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "eslint-plugin-yml": "^1.5.0",
+    "eslint-utils": "^3.0.0",
+    "eslint-scope": "^7.2.0",
+    "eslint-plugin-vue": "^9.11.0",
+    "jsonc-eslint-parser": "^2.2.0",
+    "yaml-eslint-parser": "^1.2.0",
+    "prettier-linter-helpers": "^1.0.0",
+    "prettier": "^2.8.8",
+    "eslint-visitor-keys": "^3.4.0",
+    "vue-eslint-parser": "^9.1.1"
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/longyanjiang/Nine-Ai.git"
+  },
+  "license": "MID",
+  "bugs": {
+    "url": "https://github.com/longyanjiang/Nine-Ai/issues"
+  },
+  "homepage": "https://github.com/longyanjiang/Nine-Ai#readme"
+}

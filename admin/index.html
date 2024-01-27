@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" href="/favicon.ico" />
+  <link rel="stylesheet" href="/loading.css" />
+  <link rel="stylesheet" href="/browser_upgrade/index.css" />
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, viewport-fit=cover" />
+  <title>%VITE_APP_TITLE%</title>
+</head>
+
+<body>
+  <div id="app">
+    <div class="fantastic-admin-home">
+      <div class="loading"></div>
+      <div class="text">Yi Ai Admin</div>
+
+    </div>
+    <div id="browser-upgrade">
+      <div class="title">为了您的体验，推荐使用以下浏览器</div>
+      <div class="browsers">
+        <a href="https://www.microsoft.com/edge" target="_blank" class="browser">
+          <img class="browser-icon" src="/browser_upgrade/edge.png" />
+          <div class="browser-name">Mircosoft Edge</div>
+        </a>
+        <a href="https://www.google.cn/chrome/" target="_blank" class="browser">
+          <img class="browser-icon" src="/browser_upgrade/chrome.png" />
+          <div class="browser-name">Google Chrome</div>
+        </a>
+      </div>
+    </div>
+  </div>
+  <script>
+    if (!!window.ActiveXObject || 'ActiveXObject' in window) {
+      document.getElementById('browser-upgrade').style.display = 'block'
+    }
+
+    console.log(
+        "%c本项目作者----小易，联系QQ：805239273",
+        "background-color:rgb(30,30,30);border-radius:4px;font-size:12px;padding:4px;color:rgb(220,208,129);"
+      )
+  </script>
+  <script type="module" src="/src/main.ts"></script>
+</body>
+
+</html>

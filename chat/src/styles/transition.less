@@ -1,0 +1,49 @@
+/* fade-in-left */
+.fade-in-left-enter-active {
+  transition: all 0.3s;
+}
+
+.fade-in-left-leave-active {
+  transition: none;
+}
+
+.fade-in-left-enter-from,
+.fade-in-left-enter-to {
+  opacity: 0;
+  transform: translateX(-20px);
+}
+
+.fade-in-left-leave-from,
+.fade-in-left-leave-to {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+
+/* scale */
+.scale-enter-active {
+  transition: transform 0.35s cubic-bezier(0.42, 0, 0.58, 1);
+  transform: scale(0.6);
+}
+
+.scale-enter-to {
+  transform: scale(1);
+}
+
+
+
+// 自动移滚动条样式
+::-webkit-scrollbar{
+  width: 3px;
+  height: 3px;
+}
+// 滑块部分
+::-webkit-scrollbar-thumb{
+  border-radius: 1em;
+  background-color: rgba(50,50,50,.3);
+}
+// 辊道部分
+::-webkit-scrollbar-track{
+  border-radius: 1em;
+  background-color: rgba(50,50,50,.1);
+}

@@ -1,0 +1,20 @@
+{
+  "eslint.validate": ["html", "vue", "javascript", "jsx"],
+  "emmet.syntaxProfiles": {
+    "vue-html": "html",
+    "vue": "html"
+  },
+  "editor.tabSize": 2,
+  "eslint.alwaysShowStatus": true,
+  "eslint.quiet": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true,
+    "source.fixAll": true,
+    "source.fixAll.stylelint": true
+  },
+  "stylelint.customSyntax": "postcss-less",
+  "stylelint.validate": [
+    "css",
+    "less"
+  ]
+}
