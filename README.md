@@ -14,13 +14,6 @@
 ## 页面效果展示
 <img src="https://nineai-1313051656.cos.ap-guangzhou.myqcloud.com/haibao/chat.png" width="100%">
 <img src="https://nineai-1313051656.cos.ap-guangzhou.myqcloud.com/haibao/dark.png" width="100%">
-<img src="https://nineai-1313051656.cos.ap-guangzhou.myqcloud.com/haibao/yingyong.png" width="100%">
-<img src="https://nineai-1313051656.cos.ap-guangzhou.myqcloud.com/haibao/mj.png" width="100%">
-<img src="https://nineai-1313051656.cos.ap-guangzhou.myqcloud.com/haibao/dall-e.png" width="100%">
-<img src="https://nineai-1313051656.cos.ap-guangzhou.myqcloud.com/haibao/siweidaotu.png" width="100%">
-<img src="https://nineai-1313051656.cos.ap-guangzhou.myqcloud.com/haibao/shop.png" width="100%">
-<img src="https://nineai-1313051656.cos.ap-guangzhou.myqcloud.com/haibao/admin.png" width="100%">
-<img src="https://nineai-1313051656.cos.ap-guangzhou.myqcloud.com/haibao/user.png" width="100%">
 
 
 ## 环境准备
