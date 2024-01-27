@@ -86,7 +86,7 @@
 
 ## 作者wx
 
-<img src="https://nineai-1313051656.cos.ap-guangzhou.myqcloud.com/WechatIMG65.jpeg" width="300">
+<img src="https://photo-1313051656.cos.ap-guangzhou.myqcloud.com/WechatIMG65.jpeg" width="300">
 
 
 
