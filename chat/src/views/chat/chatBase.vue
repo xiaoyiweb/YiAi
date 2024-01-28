@@ -12,7 +12,7 @@ import {
   NTooltip,
   useDialog,
   useMessage,
-  NAlert
+  NAlert,
 } from 'naive-ui'
 import type { MessageRenderMessage } from 'naive-ui'
 
@@ -1086,7 +1086,7 @@ onUnmounted(() => {
                         <SvgIcon
                           class="close-icon"
                           icon="gg:close-o"
-                          @click="dataBase64.value = null"
+                          @click=";(dataBase64 = null), (curFile = null)"
                         />
                       </template>
                       <template v-else>
@@ -1100,7 +1100,7 @@ onUnmounted(() => {
                           <SvgIcon
                             class="close-icon"
                             icon="gg:close-o"
-                            @click="dataBase64.value = null"
+                            @click=";(dataBase64 = null), (curFile = null)"
                           />
                           <!-- 替换为适当的文件图标 -->
                         </div>
