@@ -1086,7 +1086,7 @@ onUnmounted(() => {
                         <SvgIcon
                           class="close-icon"
                           icon="gg:close-o"
-                          @click="dataBase64 = ''"
+                          @click="dataBase64 = null"
                         />
                       </template>
                       <template v-else>
@@ -1100,7 +1100,7 @@ onUnmounted(() => {
                           <SvgIcon
                             class="close-icon"
                             icon="gg:close-o"
-                            @click="dataBase64 = ''"
+                            @click="dataBase64 = null"
                           />
                           <!-- 替换为适当的文件图标 -->
                         </div>
