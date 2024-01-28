@@ -50,7 +50,7 @@ export class QueueService implements OnApplicationBootstrap {
       /* 绘图和图生图扣除余额4 */
       this.jobIds.push(job.id);
       /* 扣费 */
-      await this.userBalanceService.deductFromBalance(req.user.id, 'mjDraw', 4, 4);
+      // await this.userBalanceService.deductFromBalance(req.user.id, 'mjDraw', 4, 4);
       return true;
     }
 
@@ -69,7 +69,7 @@ export class QueueService implements OnApplicationBootstrap {
       const timeout = (await this.globalConfigService.getConfigs(['mjTimeoutMs'])) || 200000;
       const job = await this.mjDrawQueue.add('mjDraw', { id: res.id, action, userId: req.user.id }, { delay: 1000, timeout: +timeout });
       /* 扣费 */
-      await this.userBalanceService.deductFromBalance(req.user.id, 'mjDraw', 1, 1);
+      // await this.userBalanceService.deductFromBalance(req.user.id, 'mjDraw', 1, 1);
       this.jobIds.push(job.id);
       return;
     }
@@ -83,7 +83,7 @@ export class QueueService implements OnApplicationBootstrap {
       const job = await this.mjDrawQueue.add('mjDraw', { id: res.id, action, userId: req.user.id }, { delay: 1000, timeout: +timeout });
       this.jobIds.push(job.id);
       /* 扣费 */
-      await this.userBalanceService.deductFromBalance(req.user.id, 'mjDraw', 4, 4);
+      // await this.userBalanceService.deductFromBalance(req.user.id, 'mjDraw', 4, 4);
       return;
     }
 
@@ -95,7 +95,7 @@ export class QueueService implements OnApplicationBootstrap {
       const timeout = (await this.globalConfigService.getConfigs(['mjTimeoutMs'])) || 200000;
       const job = await this.mjDrawQueue.add('mjDraw', { id: res.id, action, userId: req.user.id }, { delay: 1000, timeout: +timeout });
       this.jobIds.push(job.id);
-      await this.userBalanceService.deductFromBalance(req.user.id, 'mjDraw', 4, 4);
+      // await this.userBalanceService.deductFromBalance(req.user.id, 'mjDraw', 4, 4);
       return;
     }
 
@@ -107,7 +107,7 @@ export class QueueService implements OnApplicationBootstrap {
       const timeout = (await this.globalConfigService.getConfigs(['mjTimeoutMs'])) || 200000;
       const job = await this.mjDrawQueue.add('mjDraw', { id: res.id, action, userId: req.user.id }, { delay: 1000, timeout: +timeout });
       this.jobIds.push(job.id);
-      await this.userBalanceService.deductFromBalance(req.user.id, 'mjDraw', 4, 4);
+      // await this.userBalanceService.deductFromBalance(req.user.id, 'mjDraw', 4, 4);
       return;
     }
 
@@ -119,7 +119,7 @@ export class QueueService implements OnApplicationBootstrap {
       const timeout = (await this.globalConfigService.getConfigs(['mjTimeoutMs'])) || 200000;
       const job = await this.mjDrawQueue.add('mjDraw', { id: res.id, action, userId: req.user.id }, { delay: 1000, timeout: +timeout });
       this.jobIds.push(job.id);
-      await this.userBalanceService.deductFromBalance(req.user.id, 'mjDraw', 4, 4);
+      // await this.userBalanceService.deductFromBalance(req.user.id, 'mjDraw', 4, 4);
       return;
     }
   }

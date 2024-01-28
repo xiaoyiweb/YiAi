@@ -211,7 +211,7 @@ export class ChatLogService {
     }
     const list = await this.chatLogEntity.find({ where });
     return list.map((item) => {
-      const { prompt, role, answer, createdAt, model, conversationOptions, requestOptions, id } = item;
+      const { prompt, role, answer, createdAt, model, conversationOptions, requestOptions, id,imageUrl} = item;
       let parseConversationOptions: any = null
       let parseRequestOptions: any = null
       try {
@@ -228,6 +228,8 @@ export class ChatLogService {
         error: false,
         conversationOptions: parseConversationOptions,
         requestOptions: parseRequestOptions,
+        imageUrl,
+        model
       };
     });
   }

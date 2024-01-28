@@ -165,7 +165,7 @@ export class ChatgptService implements OnModuleInit {
     /* 不同场景会变更其信息 */
     let setSystemMessage = systemMessage;
     const { parentMessageId } = options;
-    const { prompt } = body;
+    const { prompt ,imageUrl,model:activeModel} = body;
     const { groupId, usingNetwork } = options;
     // const { model = 3 } = options;
     /* 获取当前对话组的详细配置信息 */
@@ -260,6 +260,8 @@ export class ChatgptService implements OnModuleInit {
             userId: req.user.id,
             type: DeductionKey.CHAT_TYPE,
             prompt,
+            imageUrl,
+            activeModel,
             answer: '',
             promptTokens: prompt_tokens,
             completionTokens: 0,
@@ -318,6 +320,8 @@ export class ChatgptService implements OnModuleInit {
           const { context: messagesHistory } = await this.nineStore.buildMessageFromParentMessageId(usingNetwork ? netWorkPrompt : prompt, {
             parentMessageId,
             systemMessage,
+            imageUrl,
+            activeModel,
             maxModelToken: maxToken,
             maxResponseTokens: maxTokenRes,
             maxRounds: addOneIfOdd(rounds),
@@ -328,6 +332,8 @@ export class ChatgptService implements OnModuleInit {
             maxTokenRes,
             apiKey: modelKey,
             model,
+            imageUrl,
+            activeModel,
             temperature,
             proxyUrl: proxyResUrl,
             onProgress: (chat) => {
@@ -386,6 +392,8 @@ export class ChatgptService implements OnModuleInit {
           role: 'user',
           name: undefined,
           usage: null,
+          imageUrl,
+          activeModel,
           parentMessageId: parentMessageId,
           conversationId: response?.conversationId,
         };
@@ -449,6 +457,8 @@ export class ChatgptService implements OnModuleInit {
         userId: req.user.id,
         type: DeductionKey.CHAT_TYPE,
         prompt,
+        imageUrl,
+        activeModel,
         answer: '',
         promptTokens: prompt_tokens,
         completionTokens: 0,

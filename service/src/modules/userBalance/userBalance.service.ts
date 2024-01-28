@@ -300,8 +300,8 @@ export class UserBalanceService {
     /* 记录修改使用的token */
     const updateBalance = { [updateKey]: b[updateKey] - amount < 0 ? 0 : b[updateKey] - amount, [useKey]: b[useKey] + UseAmount };
     /* 记录修改使用的次数 mj不需要 */
-    useKey === 'useModel3Token' && (updateBalance['useModel3Count'] = b['useModel3Count'] + 1);
-    useKey === 'useModel4Token' && (updateBalance['useModel4Count'] = b['useModel4Count'] + 1);
+    useKey === 'useModel3Token' && (updateBalance['useModel3Count'] = b['useModel3Count'] + amount);
+    useKey === 'useModel4Token' && (updateBalance['useModel4Count'] = b['useModel4Count'] + amount);
     const result = await this.userBalanceEntity.update({ userId }, updateBalance);
     if (result.affected === 0) {
       throw new HttpException('消费余额失败！', HttpStatus.BAD_REQUEST);
@@ -552,7 +552,9 @@ export class UserBalanceService {
   }
 
   /* MJ绘画失败退款 */
-  async refundMjBalance(userId, amount) {}
+  async refundMjBalance(userId, amount) {
+    return await this.deductFromBalance(userId, 'mjDraw', -amount);
+  }
 
   /* V1.5升级将旧版本余额并入到新表 */
   async upgradeBalance() {

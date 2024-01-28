@@ -32,7 +32,6 @@ export class MidjourneyService {
     private redisCacheService: RedisCacheService,
   ) {}
 
-  
   private lockPrompt = [];
 
   /* 睡眠 xs */
@@ -111,6 +110,9 @@ export class MidjourneyService {
         await this.updateDrawData(jobData, drawRes);
         /* 存完解锁当前文件 */
         this.lockPrompt = this.lockPrompt.filter((item) => item !== drawInfo.randomDrawId);
+
+        /* 只有在画成功后才扣分*/
+        this.drawSuccess(jobData);
       }
 
       return true;
@@ -160,16 +162,16 @@ export class MidjourneyService {
       const { id, content, channel_id, attachments = [], timestamp, durationSpent } = drawRes;
       const { filename, url, proxy_url, width, height, size } = attachments[0];
       /* 将图片存入cos */
-      const mjNotSaveImg = await this.globalConfigService.getConfigs(['mjNotSaveImg'])
-      let cosUrl = ''
-      if(!Number(mjNotSaveImg) || Number(mjNotSaveImg) === 0){
+      const mjNotSaveImg = await this.globalConfigService.getConfigs(['mjNotSaveImg']);
+      let cosUrl = '';
+      if (!Number(mjNotSaveImg) || Number(mjNotSaveImg) === 0) {
         Logger.debug(`------> 开始上传图片！！！`, 'MidjourneyService');
         const startDate = new Date();
         cosUrl = await this.uploadService.uploadFileFromUrl({ filename, url });
         const endDate = new Date();
         Logger.debug(`本次图片上传耗时为${(endDate.getTime() - startDate.getTime()) / 1000}秒`, 'MidjourneyService');
-      }else{
-        console.log('本次不存图片了')
+      } else {
+        console.log('本次不存图片了');
       }
       /* 记录当前图片存储方式 方便后续对不同平台图片压缩 */
       const cosType = await this.uploadService.getUploadType();
@@ -181,11 +183,11 @@ export class MidjourneyService {
         fileInfo: JSON.stringify({ width, height, size, filename, cosUrl, cosType }),
         extend: this.removeEmoji(JSON.stringify(drawRes)),
         durationSpent,
-        isSaveImg:  !Number(mjNotSaveImg) || Number(mjNotSaveImg) === 0,
+        isSaveImg: !Number(mjNotSaveImg) || Number(mjNotSaveImg) === 0,
       };
       await this.midjourneyEntity.update({ id: jobData.id }, drawInfo);
     } catch (error) {
-      console.log('TODO->存储图片失败, ', jobData,error);
+      console.log('TODO->存储图片失败, ', jobData, error);
     }
   }
 
@@ -734,17 +736,15 @@ export class MidjourneyService {
         take: size,
         skip: (page - 1) * size,
       });
-      const mjProxyImgUrl = await this.globalConfigService.getConfigs(['mjProxyImgUrl'])
+      const mjProxyImgUrl = await this.globalConfigService.getConfigs(['mjProxyImgUrl']);
       rows.forEach((item: any) => {
         try {
           const { extend, isSaveImg, fileInfo } = item;
-          const originUrl = JSON.parse(extend)?.attachments[0]?.url
+          const originUrl = JSON.parse(extend)?.attachments[0]?.url;
           item.fileInfo = this.formatFileInfo(fileInfo, isSaveImg, mjProxyImgUrl, originUrl);
-          item.isGroup = JSON.parse(extend)?.components[0]?.components[0].label === "U1";
-          item.originUrl = originUrl
-        } catch (error) {
-          
-        }
+          item.isGroup = JSON.parse(extend)?.components[0]?.components[0].label === 'U1';
+          item.originUrl = originUrl;
+        } catch (error) {}
       });
       const countQueue = await this.midjourneyEntity.count({ where: { isDelete: 0, status: In([1, 2]) } });
       const data: any = { rows: formatCreateOrUpdateDate(rows), count, countQueue };
@@ -755,18 +755,18 @@ export class MidjourneyService {
   }
 
   /* 格式化fileinfo  对于不同平台的图片进行压缩 */
-  formatFileInfo(fileInfo, isSaveImg,  mjProxyImgUrl, originUrl) {
+  formatFileInfo(fileInfo, isSaveImg, mjProxyImgUrl, originUrl) {
     if (!fileInfo) return {};
-    let parseFileInfo: any = null
+    let parseFileInfo: any = null;
     try {
       parseFileInfo = JSON.parse(fileInfo);
     } catch (error) {
-      parseFileInfo = null
+      parseFileInfo = null;
     }
-    if(!parseFileInfo) return;
+    if (!parseFileInfo) return;
     const { url, filename, size, cosUrl, width, height } = parseFileInfo;
     const targetSize = 310; // 目标宽度或高度
-    
+
     // TODO判断逻辑有误 腾讯云会导致也判断为 chevereto  更换判断规则
     const imgType = cosUrl.includes('cos') ? 'tencent' : cosUrl.includes('oss') ? 'ali' : 'chevereto';
     let compress;
@@ -786,10 +786,10 @@ export class MidjourneyService {
     }
     parseFileInfo.thumbImg = thumbImg;
     /* 如果配置了不存储图片 则 isSaceImg 为false的则需要使用反代地址拼接 */
-    if(!isSaveImg){
-      const proxyImgUrl = `${mjProxyImgUrl}/mj/pipe?url=${originUrl}`
-      parseFileInfo.thumbImg = proxyImgUrl
-      parseFileInfo.cosUrl = proxyImgUrl
+    if (!isSaveImg) {
+      const proxyImgUrl = `${mjProxyImgUrl}/mj/pipe?url=${originUrl}`;
+      parseFileInfo.thumbImg = proxyImgUrl;
+      parseFileInfo.cosUrl = proxyImgUrl;
     }
     return parseFileInfo;
   }
@@ -859,8 +859,8 @@ export class MidjourneyService {
     //   return;
     // }
     const count = await this.midjourneyEntity.count({ where: { userId: id, isDelete: 0, status: In([1, 2]) } });
-    const mjLimitCount = await this.globalConfigService.getConfigs(['mjLimitCount'])
-    const max = mjLimitCount ? Number(mjLimitCount) : 2
+    const mjLimitCount = await this.globalConfigService.getConfigs(['mjLimitCount']);
+    const max = mjLimitCount ? Number(mjLimitCount) : 2;
     if (count >= max) {
       throw new HttpException(`当前管理员限制单用户同时最多能执行${max}个任务`, HttpStatus.BAD_REQUEST);
     }
@@ -870,9 +870,19 @@ export class MidjourneyService {
   async drawFailed(jobData) {
     const { id, userId, action } = jobData;
     /* 退还余额 放大图片（类型2）是1  其他都是4 */
-    const amount = action === 2 ? 1 : 4;
-    await this.userBalanceService.refundMjBalance(userId, amount);
+    // const amount = action === 2 ? 1 : 4;
+    // await this.userBalanceService.refundMjBalance(userId, amount);
     await this.midjourneyEntity.update({ id }, { status: 4 });
+  }
+
+  /* 绘图成功扣费 */
+  async drawSuccess(jobData) {
+    const { id, userId, action } = jobData;
+    /* 扣除余额 放大图片（类型2）是1 其他都是4 */
+    const amount = action === 2 ? 1 : 4;
+    Logger.debug(`绘画完成，执行扣费，扣除费用:${amount}积分。`);
+    await this.userBalanceService.refundMjBalance(userId, -amount);
+    await this.midjourneyEntity.update({ id }, { status: 3 });
   }
 
   /* 获取绘画列表  */
@@ -902,17 +912,15 @@ export class MidjourneyService {
       skip: (page - 1) * size,
       select: ['fileInfo', 'extend', 'prompt', 'createdAt', 'id', 'extend', 'fullPrompt', 'rec', 'isSaveImg'],
     });
-    const mjProxyImgUrl = await this.globalConfigService.getConfigs(['mjProxyImgUrl'])
+    const mjProxyImgUrl = await this.globalConfigService.getConfigs(['mjProxyImgUrl']);
     rows.forEach((item: any) => {
       try {
         const { extend, isSaveImg, fileInfo } = item;
-        const originUrl = JSON.parse(extend)?.attachments[0]?.url
+        const originUrl = JSON.parse(extend)?.attachments[0]?.url;
         item.fileInfo = this.formatFileInfo(fileInfo, isSaveImg, mjProxyImgUrl, originUrl);
-        item.isGroup = JSON.parse(extend)?.components[0]?.components[0].label === "U1";
-        item.originUrl = originUrl
-      } catch (error) {
-        
-      }
+        item.isGroup = JSON.parse(extend)?.components[0]?.components[0].label === 'U1';
+        item.originUrl = originUrl;
+      } catch (error) {}
     });
 
     if (Number(size) === 999) {
@@ -931,10 +939,10 @@ export class MidjourneyService {
   }
 
   /*  */
-  async getFullPrompt(id: number){
-    const m = await this.midjourneyEntity.findOne({where: {id}})
-    if(!m) return ''
-    const { fullPrompt } = m
+  async getFullPrompt(id: number) {
+    const m = await this.midjourneyEntity.findOne({ where: { id } });
+    if (!m) return '';
+    const { fullPrompt } = m;
     return fullPrompt;
   }
 
@@ -953,27 +961,25 @@ export class MidjourneyService {
         skip: (page - 1) * size,
       });
 
-      const userIds = rows.map((item: any) => item.userId).filter( id => id < 100000);
+      const userIds = rows.map((item: any) => item.userId).filter((id) => id < 100000);
       const userInfos = await this.userEntity.find({ where: { id: In(userIds) }, select: ['id', 'username', 'avatar', 'email'] });
       rows.forEach((item: any) => {
         item.userInfo = userInfos.find((user) => user.id === item.userId);
       });
-      const mjProxyImgUrl = await this.globalConfigService.getConfigs(['mjProxyImgUrl'])
+      const mjProxyImgUrl = await this.globalConfigService.getConfigs(['mjProxyImgUrl']);
       rows.forEach((item: any) => {
         try {
           const { extend, isSaveImg, fileInfo } = item;
-          const originUrl = JSON.parse(extend)?.attachments[0]?.url
+          const originUrl = JSON.parse(extend)?.attachments[0]?.url;
           item.fileInfo = this.formatFileInfo(fileInfo, isSaveImg, mjProxyImgUrl, originUrl);
           // item.isGroup = JSON.parse(extend)?.components[0]?.components.length === 5;
-          item.isGroup = JSON.parse(extend)?.components[0]?.components[0].label === "U1";
-          item.originUrl = originUrl
-        } catch (error) {
-          
-        }
+          item.isGroup = JSON.parse(extend)?.components[0]?.components[0].label === 'U1';
+          item.originUrl = originUrl;
+        } catch (error) {}
       });
       if (req.user.role !== 'super') {
         rows.forEach((item: any) => {
-          if(item.userInfo && item.userInfo.email){
+          if (item.userInfo && item.userInfo.email) {
             item.userInfo.email = item.userInfo.email.replace(/(.{2}).+(.{2}@.+)/, '$1****$2');
           }
         });
@@ -1021,38 +1027,38 @@ export class MidjourneyService {
     }
   }
 
-  async setPrompt(req: Request, body){
+  async setPrompt(req: Request, body) {
     try {
-      const { prompt, status, isCarryParams, title, order, id, aspect } = body
-    if(id){
-      return await this.mjPromptsEntity.update({id}, {prompt, status, isCarryParams, order, aspect})
-    }else{
-      return await this.mjPromptsEntity.save({prompt, status, isCarryParams, title, order, aspect})
-    }
+      const { prompt, status, isCarryParams, title, order, id, aspect } = body;
+      if (id) {
+        return await this.mjPromptsEntity.update({ id }, { prompt, status, isCarryParams, order, aspect });
+      } else {
+        return await this.mjPromptsEntity.save({ prompt, status, isCarryParams, title, order, aspect });
+      }
     } catch (error) {
       console.log('error: ', error);
     }
   }
 
-  async delPrompt(req: Request, body){
-    const {id} = body
-    if(!id) {
+  async delPrompt(req: Request, body) {
+    const { id } = body;
+    if (!id) {
       throw new HttpException('非法操作！', HttpStatus.BAD_REQUEST);
     }
-    return await this.mjPromptsEntity.delete({id})
+    return await this.mjPromptsEntity.delete({ id });
   }
 
-  async queryPrompt(){
+  async queryPrompt() {
     return await this.mjPromptsEntity.find({
       order: { order: 'DESC' },
-    })
+    });
   }
 
-  async proxyImg(params){
-    const { url } = params
-    if(!url) return 
+  async proxyImg(params) {
+    const { url } = params;
+    if (!url) return;
     const response = await axios.get(url, { responseType: 'arraybuffer' });
     const base64 = Buffer.from(response.data).toString('base64');
-    return base64
+    return base64;
   }
 }

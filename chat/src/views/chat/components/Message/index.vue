@@ -15,6 +15,7 @@ interface Props {
   inversion?: boolean
   error?: boolean
   loading?: boolean
+  imageUrl?: string
 }
 
 interface Emit {
@@ -53,7 +54,9 @@ const options = computed(() => {
     common.unshift({
       label: asRawText.value ? t('chat.preview') : t('chat.showRawText'),
       key: 'toggleRenderType',
-      icon: iconRender({ icon: asRawText.value ? 'ic:outline-code-off' : 'ic:outline-code' }),
+      icon: iconRender({
+        icon: asRawText.value ? 'ic:outline-code-off' : 'ic:outline-code',
+      }),
     })
   }
 
@@ -101,8 +104,14 @@ function handleRegenerate() {
     >
       <AvatarComponent :image="inversion" />
     </div>
-    <div class="overflow-hidden text-sm " :class="[inversion ? 'items-end' : 'items-start']">
-      <p class="text-xs text-[#b4bbc4]" :class="[inversion ? 'text-right' : 'text-left']">
+    <div
+      class="overflow-hidden text-sm"
+      :class="[inversion ? 'items-end' : 'items-start']"
+    >
+      <p
+        class="text-xs text-[#b4bbc4]"
+        :class="[inversion ? 'text-right' : 'text-left']"
+      >
         {{ dateTime }}
       </p>
       <div
@@ -119,11 +128,12 @@ function handleRegenerate() {
           @regenerate="handleRegenerate"
           @copy="handleCopy"
           @delete="handleDetele"
+          :imageUrl="imageUrl"
         />
         <div class="flex flex-col">
           <button
             v-if="!inversion"
-            class=" flex mb-2 transition text-neutral-300 hover:text-neutral-800 dark:hover:text-neutral-300"
+            class="flex mb-2 transition text-neutral-300 hover:text-neutral-800 dark:hover:text-neutral-300"
             @click="handleRegenerate"
           >
             <SvgIcon icon="ri:restart-line" />
@@ -134,7 +144,9 @@ function handleRegenerate() {
             :options="options"
             @select="handleSelect"
           >
-            <button class="transition text-neutral-300 hover:text-neutral-800 dark:hover:text-neutral-200">
+            <button
+              class="transition text-neutral-300 hover:text-neutral-800 dark:hover:text-neutral-200"
+            >
               <SvgIcon icon="ri:more-2-fill" />
             </button>
           </NDropdown>

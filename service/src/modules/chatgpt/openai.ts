@@ -102,7 +102,11 @@ export  function sendMessageFromOpenAi(messagesHistory,  inputs ){
 
 
 export function getTokenCount(text: string) {
-  if(!text) return 0;
+  if (!text) return 0;
+  // 确保text是字符串类型
+  if (typeof text !== 'string') {
+    text = String(text);
+  }
   text = text.replace(/<\|endoftext\|>/g, '')
   return tokenizer.encode(text).length
 }

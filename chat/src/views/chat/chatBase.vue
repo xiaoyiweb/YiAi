@@ -12,7 +12,9 @@ import {
   NTooltip,
   useDialog,
   useMessage,
+  NAlert
 } from 'naive-ui'
+import type { MessageRenderMessage } from 'naive-ui'
 
 import html2canvas from 'html2canvas'
 import { useRoute } from 'vue-router'
@@ -86,7 +88,7 @@ const theme = computed(() => appStore.theme)
 
 const globaelConfig = computed(() => authStore.globalConfig)
 const isSetBeian = computed(
-  () => globaelConfig.value?.companyName && globaelConfig.value?.filingNumber,
+  () => globaelConfig.value?.companyName && globaelConfig.value?.filingNumber
 )
 const { addGroupChat, updateGroupChat, updateGroupChatSome } = useChat()
 const tradeStatus = computed(() => route.query.trade_status as string)
@@ -101,13 +103,13 @@ const dataSources = computed(() => chatStore.chatList)
 
 /* 当前所有的ai回复信息列表 方便拿到上下文 */
 const conversationList = computed(() =>
-  dataSources.value.filter(item => !item.inversion && !item.error),
+  dataSources.value.filter((item) => !item.inversion && !item.error)
 )
 
 /* 当前上下文有id的最后一条 防止停止回答的时候 上一条的id是空 接不上上下文 */
 const lastContext = computed(() => {
   const hasIdCoversationList = conversationList.value.filter(
-    item => item.conversationOptions?.parentMessageId,
+    (item) => item.conversationOptions?.parentMessageId
   )
   return hasIdCoversationList[hasIdCoversationList.length - 1]
     ?.conversationOptions
@@ -120,17 +122,22 @@ const firstScroll = ref<boolean>(true)
 const tipsRef = ref<any>(null)
 const tipText = ref('')
 const tipsHeight = ref<any>(null)
+const dataBase64 = ref(null)
+const fileName = ref('')
+const isImageFile = ref(false)
+const showDeleteIcon = ref(false)
+
 /* 当前选中的对话组 */
 const activeGroupId = computed(() => chatStore.active)
 /* 当前对话组的详细信息 */
 const activeGroupInfo = computed(() =>
-  chatStore.groupList.find((item: any) => item.uuid === chatStore.active),
+  chatStore.groupList.find((item: any) => item.uuid === chatStore.active)
 )
 /* 当前选用的模型的类型 1： openai  2: 百度  */
 const activeModelKeyType = computed(() => Number(chatStore?.activeModelKeyType))
 /* 当前对话组是否是应用 */
 const activeAppId = computed(() =>
-  activeGroupInfo?.value ? activeGroupInfo.value.appId : 0,
+  activeGroupInfo?.value ? activeGroupInfo.value.appId : 0
 )
 /* 粘贴板的文字 */
 const clipboardText = computed(() => useGlobalStore.clipboardText)
@@ -144,43 +151,37 @@ watch(clipboardText, (val) => {
 watch(
   activeAppId,
   (val) => {
-    if (val)
-      queryAppDetail(val)
+    if (val) queryAppDetail(val)
     else appDetail.value = null
   },
-  { immediate: true },
+  { immediate: true }
 )
 
 watch(
   activeGroupId,
   (val) => {
-    if (val)
-      firstScroll.value = true
-    if (inputRef.value && !isMobile.value)
-      inputRef.value?.focus()
+    if (val) firstScroll.value = true
+    if (inputRef.value && !isMobile.value) inputRef.value?.focus()
   },
-  { immediate: true },
+  { immediate: true }
 )
 
 watch(
   dataSources,
   (val) => {
-    if (val.length === 0)
-      return
+    if (val.length === 0) return
     if (firstScroll.value) {
       firstScroll.value = false
       scrollToBottom()
     }
   },
-  { immediate: true },
+  { immediate: true }
 )
 
 const modelName = computed(() => {
-  if (!chatStore.activeConfig)
-    return
+  if (!chatStore.activeConfig) return
   const { modelTypeInfo, modelInfo } = chatStore.activeConfig
-  if (!modelTypeInfo || !modelInfo)
-    return
+  if (!modelTypeInfo || !modelInfo) return
   return `${modelInfo.modelName}`
 })
 function handleOpenModelDialog() {
@@ -202,14 +203,52 @@ let curFile: File | null
 
 async function handleFileSelect(event: any) {
   const file = event?.target?.files[0]
-  if (file.size <= 5 * 1024 * 1024)
+  if (!file) return
+  if (file.size <= 10 * 1024 * 1024) {
     await handleSetFile(file)
-  else ms.error('上传文件失败，上传大小不能超过5M')
+  } else {
+    return ms.error('上传文件失败，上传大小不能超过10M')
+  }
+  let trimmedFileName = file.name
+  const maxLength = 8 // 最大长度限制
+  const extension = trimmedFileName.split('.').pop() // 获取文件扩展名
+
+  if (trimmedFileName.length > maxLength) {
+    // 截取文件名并添加省略号，同时保留扩展名
+    trimmedFileName =
+      trimmedFileName.substring(0, maxLength - extension.length - 1) +
+      '….' +
+      extension
+  }
+
+  fileName.value = trimmedFileName // 更新文件名
+  console.log(file.type)
+  // 检查文件类型
+  if (file.type.startsWith('image/')) {
+    // 处理图像文件
+    isImageFile.value = true
+    handleSetFile(file)
+  } else if (
+    file.type.startsWith('application/') ||
+    file.type.startsWith('text/')
+  ) {
+    // 处理文件类型
+    isImageFile.value = false
+    handleSetFile(file)
+  } else {
+    // 处理其他类型的文件或显示错误消息
+    ms.error('上传文件失败，不支持此类型文件')
+    console.log('不支持的文件类型')
+  }
 }
 
 async function handleSetFile(file: File) {
   curFile = file
-  uploadFile()
+  const reader = new FileReader()
+  reader.onload = (event: any) => {
+    dataBase64.value = event.target?.result as string
+  }
+  reader.readAsDataURL(file)
 }
 
 function uploadBtn() {
@@ -233,11 +272,13 @@ async function uploadFile() {
         }
       },
     })
-    prompt.value = `请分析一下上传的这个文件：${res?.data?.data}`
-    ms.success('上传成功,输入内容后发送', { duration: 5000, closable: true })
-  }
-  catch (error) {
-    ms.error('网络异常,上传失败')
+    return res?.data?.data
+  } catch (error) {
+    ms.error('网络异常,发送失败')
+    return null
+  } finally {
+    dataBase64.value = null
+    curFile = null
   }
 }
 
@@ -271,9 +312,9 @@ function handleScrollBtm() {
 /* 发送消息 */
 async function handleSubmit(index?: number) {
   if (
-    chatStore.groupList.length === 0
-    || loading.value
-    || !typingStatusEnd.value
+    chatStore.groupList.length === 0 ||
+    loading.value ||
+    !typingStatusEnd.value
   )
     return
   let message = ''
@@ -287,12 +328,10 @@ async function handleSubmit(index?: number) {
 
 function parseTextToJSON(input: string) {
   const startIndex = input.indexOf(',"text":"') + 10
-  if (startIndex === -1)
-    return { text: '' }
+  if (startIndex === -1) return { text: '' }
 
   let endIndex = input.indexOf('","delta"', startIndex)
-  if (endIndex === -1)
-    endIndex = input.length - 1
+  if (endIndex === -1) endIndex = input.length - 1
   else endIndex = endIndex - 10
 
   const text = input.substring(startIndex, endIndex)
@@ -301,15 +340,17 @@ function parseTextToJSON(input: string) {
 
 /* 按钮发送消息 */
 async function onConversation(msg?: string) {
+  let imageUrl = null
+  if (dataBase64.value || curFile) {
+    imageUrl = await uploadFile()
+  }
   let message = msg || prompt.value
   if (tipText.value && !message.includes(tipText.value))
     message = `${tipText.value}\n${message}`
 
-  if (loading.value)
-    return
+  if (loading.value) return
 
-  if (!message || message.trim() === '')
-    return
+  if (!message || message.trim() === '') return
 
   controller = new AbortController()
 
@@ -319,6 +360,7 @@ async function onConversation(msg?: string) {
     text: message,
     inversion: true,
     error: false,
+    imageUrl,
     conversationOptions: null,
     requestOptions: { prompt: message, options: null },
   })
@@ -369,12 +411,10 @@ async function onConversation(msg?: string) {
             if (cacheResText.length - i > 150) {
               currentText += cacheResText.substring(i, i + 10)
               i += 10
-            }
-            else if (cacheResText.length - i > 200) {
+            } else if (cacheResText.length - i > 200) {
               currentText += cacheResText.substring(i)
               i += cacheResText.length - i
-            }
-            else {
+            } else {
               currentText += cacheResText[i]
               i++
             }
@@ -396,8 +436,8 @@ async function onConversation(msg?: string) {
           const curLen = currentText ? currentText.length : 0
           const cacheResLen = cacheResText ? cacheResText.length : 0
           if (
-            !isStreamIn.value
-            && (curLen === cacheResLen || curLen > cacheResLen)
+            !isStreamIn.value &&
+            (curLen === cacheResLen || curLen > cacheResLen)
           ) {
             typingStatusEnd.value = true
             updateGroupChatSome(dataSources.value.length - 1, {
@@ -413,12 +453,12 @@ async function onConversation(msg?: string) {
               authStore.updateUserBanance(userBanance)
 
             if (
-              dataSources.value.length === 2
-              && !activeGroupInfo?.value?.appId
+              dataSources.value.length === 2 &&
+              !activeGroupInfo?.value?.appId
             ) {
               const lengthStr = isMobile.value ? 10 : 20
-              const title
-                = dataSources.value[1].text.length > lengthStr
+              const title =
+                dataSources.value[1].text.length > lengthStr
                   ? dataSources.value[1].text.slice(0, lengthStr)
                   : dataSources.value[1].text
               chatStore
@@ -433,8 +473,7 @@ async function onConversation(msg?: string) {
           /* 有多余的再请求下一帧 */
           if (cacheResText.length && cacheResText.length > currentText.length) {
             requestAnimationFrame(update)
-          }
-          else {
+          } else {
             setTimeout(() => {
               requestAnimationFrame(update)
             }, 1000)
@@ -447,6 +486,8 @@ async function onConversation(msg?: string) {
         prompt: message,
         appId: activeGroupInfo.value ? activeGroupInfo.value.appId : 0,
         options,
+        imageUrl,
+        model: chatStore?.activeModelName,
         signal: controller.signal,
         onDownloadProgress: ({ event }) => {
           const xhr = event.target
@@ -456,16 +497,14 @@ async function onConversation(msg?: string) {
           if ([1].includes(activeModelKeyType.value)) {
             const lastIndex = responseText.lastIndexOf(
               '\n',
-              responseText.length - 2,
+              responseText.length - 2
             )
             let chunk = responseText
-            if (lastIndex !== -1)
-              chunk = responseText.substring(lastIndex)
+            if (lastIndex !== -1) chunk = responseText.substring(lastIndex)
 
             try {
               data = JSON.parse(chunk)
-            }
-            catch (error) {
+            } catch (error) {
               /* 二次解析 */
               // const parseData = parseTextToJSON(responseText)
               // TODO 如果出现类似超时错误 会连接上次的内容一起发出来导致无法解析  后端需要处理 下
@@ -489,8 +528,7 @@ async function onConversation(msg?: string) {
                 const parseData = JSON.parse(line)
                 cacheResult += parseData.result
                 tem = parseData
-              }
-              catch (error) {
+              } catch (error) {
                 console.log('Json parse 2 3 type error: ')
               }
             }
@@ -502,8 +540,7 @@ async function onConversation(msg?: string) {
             /* 如果出现输出内容不一致就需要处理了 */
             if (activeModelKeyType.value === 1) {
               cacheResText = data.text
-              if (data?.userBanance)
-                userBanance = data?.userBanance
+              if (data?.userBanance) userBanance = data?.userBanance
             }
 
             if ([2, 3].includes(activeModelKeyType.value)) {
@@ -512,24 +549,21 @@ async function onConversation(msg?: string) {
               isStreamIn.value = !is_end
               data?.userBanance && (userBanance = data?.userBanance)
             }
-          }
-          catch (error) {}
+          } catch (error) {}
         },
       })
     }
     await fetchChatAPIOnce()
-  }
-  catch (error: any) {
+  } catch (error: any) {
     useGlobalStore.updateIsChatIn(false)
     clearInterval(timer)
     isStreamIn.value = false
     if (
-      error.code === 402
-      || error?.message.includes('余额不足')
-      || error?.message.includes('免费额度已经使用完毕')
+      error.code === 402 ||
+      error?.message.includes('余额不足') ||
+      error?.message.includes('免费额度已经使用完毕')
     ) {
-      if (isLogin.value)
-        useGlobalStore.updateGoodsDialog(true)
+      if (isLogin.value) useGlobalStore.updateGoodsDialog(true)
       else authStore.setLoginDialog(true)
     }
 
@@ -568,10 +602,10 @@ async function onConversation(msg?: string) {
       requestOptions: { prompt: message, options: { ...options } },
     })
     scrollToBottomIfAtBottom()
-  }
-  finally {
+  } finally {
     loading.value = false
     isStreamIn.value = false
+    imageUrl = null
   }
 }
 
@@ -589,16 +623,14 @@ function handleRefresh() {
     ms.success('感谢你的购买、祝您使用愉快~', { duration: 5000 })
     authStore.getUserInfo()
     router.replace({ name: 'Chat', query: {} })
-  }
-  else {
+  } else {
     ms.error('您还没有购买成功哦~')
   }
 }
 
 /* 导出 */
 function handleExport() {
-  if (loading.value)
-    return
+  if (loading.value) return
 
   const d = dialog.warning({
     title: t('chat.exportImage'),
@@ -627,11 +659,9 @@ function handleExport() {
         d.loading = false
         ms.success(t('chat.exportSuccess'))
         Promise.resolve()
-      }
-      catch (error: any) {
+      } catch (error: any) {
         ms.error(t('chat.exportFailed'))
-      }
-      finally {
+      } finally {
         d.loading = false
       }
     },
@@ -640,8 +670,7 @@ function handleExport() {
 
 /* 删除 */
 function handleDelete({ chatId }: Chat.Chat) {
-  if (loading.value)
-    return
+  if (loading.value) return
 
   dialog.warning({
     title: t('chat.deleteMessage'),
@@ -655,8 +684,7 @@ function handleDelete({ chatId }: Chat.Chat) {
 }
 
 function handleClear() {
-  if (loading.value)
-    return
+  if (loading.value) return
 
   dialog.warning({
     title: t('chat.clearChat'),
@@ -676,8 +704,7 @@ function handleEnter(event: KeyboardEvent) {
       event.preventDefault()
       handleSubmit()
     }
-  }
-  else {
+  } else {
     if (event.key === 'Enter' && event.ctrlKey) {
       event.preventDefault()
       handleSubmit()
@@ -695,17 +722,16 @@ function handleStop() {
 }
 
 const placeholder = computed(() => {
-  if (isMobile.value)
-    return t('chat.placeholderMobile')
+  if (isMobile.value) return t('chat.placeholderMobile')
   return t('chat.placeholder')
 })
 
 const buttonDisabled = computed(() => {
   return (
-    loading.value
-    || !prompt.value
-    || prompt.value.trim() === ''
-    || !typingStatusEnd.value
+    loading.value ||
+    !prompt.value ||
+    prompt.value.trim() === '' ||
+    !typingStatusEnd.value
   )
 })
 // 改动：发送后添加loading圈圈
@@ -719,8 +745,7 @@ function getTipsRefHeight() {
 
 function onInputeTip() {
   tipsHeight.value = 'auto'
-  if (!tipText.value)
-    tipsHeight.value = 0
+  if (!tipText.value) tipsHeight.value = 0
 
   nextTick(() => getTipsRefHeight())
 }
@@ -728,24 +753,20 @@ function onInputeTip() {
 onMounted(async () => {
   chatStore.queryChatPre()
 
-  if (token.value)
-    otherLoginByToken(token.value)
+  if (token.value) otherLoginByToken(token.value)
 
-  if (tradeStatus.value)
-    handleRefresh()
+  if (tradeStatus.value) handleRefresh()
 
   nextTick(async () => {
     await chatStore.queryActiveChatLogList()
     scrollToBottom()
-    if (inputRef.value && !isMobile.value)
-      inputRef.value?.focus()
+    if (inputRef.value && !isMobile.value) inputRef.value?.focus()
   })
 })
 const darkMode = computed(() => appStore.theme === 'dark')
 
 onUnmounted(() => {
-  if (loading.value)
-    controller.abort()
+  if (loading.value) controller.abort()
 })
 </script>
 
@@ -793,6 +814,7 @@ onUnmounted(() => {
                 :inversion="item.inversion"
                 :error="item.error"
                 :loading="item.loading"
+                :imageUrl="item.imageUrl"
                 @regenerate="handleSubmit(index)"
                 @delete="handleDelete(item)"
               />
@@ -825,10 +847,10 @@ onUnmounted(() => {
                     'text-[#3076fd]': usingContext,
                     'text-[#a8071a]': !usingContext,
                   }"
-                ><SvgIcon
-                  class="text-lg"
-                  style="width: 1em; height: 1em"
-                  icon="ri:chat-history-line"
+                  ><SvgIcon
+                    class="text-lg"
+                    style="width: 1em; height: 1em"
+                    icon="ri:chat-history-line"
                 /></span>
               </button>
             </template>
@@ -852,10 +874,11 @@ onUnmounted(() => {
                     class="shrink0 flex h-8 w-8 items-center justify-center rounded border transition hover:bg-[#eef0f3] dark:border-neutral-700 dark:hover:bg-[#33373c]"
                     @click="openChatPre"
                   >
-                    <span><SvgIcon
-                      class="text-lg"
-                      style="width: 1em; height: 1em"
-                      icon="noto:open-book"
+                    <span
+                      ><SvgIcon
+                        class="text-lg"
+                        style="width: 1em; height: 1em"
+                        icon="noto:open-book"
                     /></span>
                   </button>
                 </template>
@@ -950,7 +973,7 @@ onUnmounted(() => {
                 <template #icon>
                   <span class="text-base text-slate-500 dark:text-slate-400">
                     <!-- <SvgIcon icon="streamline-emojis:wrapped-gift-1" /> -->
-                    <img :src="modelSvg" class="h-8" alt="">
+                    <img :src="modelSvg" class="h-8" alt="" />
                   </span>
                 </template>
                 <span style="color: #3076fd">{{ modelName }}</span>
@@ -1007,7 +1030,10 @@ onUnmounted(() => {
                 <div class="flex space-x-2">
                   <NTooltip
                     v-if="
-                      chatStore.activeConfig.modelInfo.model === 'gpt-4-all'
+                      !dataBase64 &&
+                      (chatStore.activeConfig.modelInfo.model === 'gpt-4-all' ||
+                        chatStore.activeConfig.modelInfo.model ===
+                          'gpt-4-vision-preview')
                     "
                     trigger="hover"
                     placement="bottom-end"
@@ -1025,24 +1051,70 @@ onUnmounted(() => {
                             :multiple="false"
                             type="file"
                             style="display: none"
-                            accept="text/plain,image/*, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/pdf"
-                            @change="handleFileSelect($event)"
-                          >
-                          <SvgIcon
-                            class="text-lg"
-                            style="width: 1em; height: 1em"
-                            icon="mingcute:upload-line"
-                          /></span>
+                            :accept="
+                              chatStore.activeConfig.modelInfo.model ===
+                              'gpt-4-vision-preview'
+                                ? 'image/*'
+                                : 'text/plain,image/*, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/pdf'
+                            "
+                            @change="handleFileSelect($event)" />
+                          <SvgIcon icon="mingcute:upload-line"
+                        /></span>
                       </button>
                     </template>
                     上传
                   </NTooltip>
+                  <!-- 预览容器 -->
+                  <div
+                    v-if="dataBase64"
+                    class="relative flex items-start justify-start"
+                  >
+                    <div
+                      class="group"
+                      @mouseover="showDeleteIcon = true"
+                      @mouseleave="showDeleteIcon = false"
+                    >
+                      <!-- 根据 isImageFile 的值显示不同内容 -->
+                      <template v-if="isImageFile">
+                        <!-- 图片预览 -->
+                        <img
+                          :src="dataBase64"
+                          class="max-w-full max-h-10 border border-gray-300 rounded-lg"
+                          alt="预览图片"
+                        />
+                        <!-- 清除图标 -->
+                        <SvgIcon
+                          class="close-icon"
+                          icon="gg:close-o"
+                          @click="dataBase64 = ''"
+                        />
+                      </template>
+                      <template v-else>
+                        <!-- 非图片文件预览（例如文件图标） -->
+                        <div
+                          style="white-space: nowrap; padding: 0.25rem"
+                          class="flex items-center justify-center border border-gray-300 rounded-lg h-8 hover:bg-gray-100 text-gray-700 dark:hover:bg-gray-700 dark:text-gray-400"
+                        >
+                          <span>{{ fileName }}</span>
+                          <!-- 清除图标 -->
+                          <SvgIcon
+                            class="close-icon"
+                            icon="gg:close-o"
+                            @click="dataBase64 = ''"
+                          />
+                          <!-- 替换为适当的文件图标 -->
+                        </div>
+                      </template>
+                    </div>
+                  </div>
                 </div>
                 <div class="flex justify-between items-center">
                   <div
                     class="flex items-center text-neutral-400 cursor-pointer hover:text-[#3076fd]"
                   >
-                    <span class="ml-2 mr-2 text-xs" @click="toggleUsingNetwork">{{ usingNetwork ? '关闭' : '开启' }}联网访问</span>
+                    <span class="ml-2 mr-2 text-xs" @click="toggleUsingNetwork"
+                      >{{ usingNetwork ? '关闭' : '开启' }}联网访问</span
+                    >
                     <NTooltip trigger="hover" :disabled="isMobile">
                       <template #trigger>
                         <SvgIcon
@@ -1101,9 +1173,10 @@ onUnmounted(() => {
         class="ml-2 transition-all text-[#aeaeae] hover:text-[#60606d]"
         href="https://beian.miit.gov.cn"
         target="_blank"
-      >{{ globaelConfig?.filingNumber }}</a>
+        >{{ globaelConfig?.filingNumber }}</a
+      >
     </div>
-    <NModal v-model:show="showProgressModal" :mask-closable="false">
+    <!-- <NModal v-model:show="showProgressModal" :mask-closable="false">
       <NCard
         style="width: 80%"
         title="上传文件中"
@@ -1119,7 +1192,7 @@ onUnmounted(() => {
           processing
         />
       </NCard>
-    </NModal>
+    </NModal> -->
   </div>
 </template>
 
@@ -1136,5 +1209,32 @@ onUnmounted(() => {
 }
 .shrink0 {
   flex-shrink: 0 !important;
+}
+
+.close-icon {
+  position: absolute;
+  top: -0;
+  right: 0;
+  color: #ff6347;
+  font-size: 1rem;
+  width: 1rem;
+  height: 1rem;
+  animation: scaleAnim 2s infinite ease-in-out;
+  cursor: pointer;
+  &:hover {
+    font-weight: 800;
+    color: red;
+  }
+}
+
+@keyframes scaleAnim {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.2);
+  }
 }
 </style>

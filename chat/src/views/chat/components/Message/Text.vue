@@ -15,6 +15,7 @@ interface Props {
   text?: string
   loading?: boolean
   asRawText?: boolean
+  imageUrl?: string
 }
 
 interface Emit {
@@ -83,6 +84,12 @@ const text = computed(() => {
   if (!props.asRawText) return mdi.render(value)
   return value
 })
+const imageUrl = computed(() => props.imageUrl)
+
+const isImageUrl = computed(() => {
+  if (!imageUrl.value) return false
+  return /\.(jpg|jpeg|png|gif)$/i.test(imageUrl.value)
+})
 
 function highlightBlock(str: string, lang?: string) {
   return `<pre class="code-block-wrapper ${
@@ -122,7 +129,11 @@ defineExpose({ textRef })
             v-html="text"
           />
           <div v-else class="w-full whitespace-pre-wrap" v-text="text" />
-          <span v-if="loading" class="dark:text-white w-[4px] h-[20px] block animate-blink" style="display:none"/>
+          <span
+            v-if="loading"
+            class="dark:text-white w-[4px] h-[20px] block animate-blink"
+            style="display: none"
+          />
         </div>
         <!-- 小易改动：注册掉底部的内容 -->
         <!-- <div style="margin-top: 0.5rem"> -->
@@ -170,6 +181,28 @@ defineExpose({ textRef })
       </div>
       <div v-else>
         <div class="whitespace-pre-wrap" v-text="text" />
+        <a v-if="imageUrl && isImageUrl" :href="imageUrl" target="_blank">
+          <img
+            :src="imageUrl"
+            alt="图片"
+            class="h-auto rounded-md mb-1"
+            :class="{ 'max-w-full': isMobile, 'max-w-sm': !isMobile }"
+            style="margin-top: 0.5rem"
+          />
+        </a>
+        <a
+          :href="imageUrl"
+          target="_blank"
+          :class="{ 'file-2': isMobile, 'file-1': !isMobile }"
+        >
+          <img
+            src="@/assets/file.jpeg"
+            alt="文件"
+            class="h-auto rounded-md mb-1"
+            :class="{ 'file-2': isMobile, 'file-1': !isMobile }"
+            v-if="imageUrl && !isImageUrl"
+          />
+        </a>
         <div v-if="false" style="margin-left: 0.5rem">
           <NButton class="ml-2" text color="#FFF" @click="handleCopy">
             <template #icon>
@@ -250,5 +283,18 @@ defineExpose({ textRef })
 
 html.dark pre code.hljs {
   padding: 0 !important;
+}
+
+.file-1 {
+  display: inline;
+  margin-top: 0.5rem;
+  width: 120px;
+  height: 150px;
+}
+.file-2 {
+  display: inline;
+  margin-top: 0.5rem;
+  width: 90px;
+  height: 120px;
 }
 </style>

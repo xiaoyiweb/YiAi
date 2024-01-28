@@ -66,4 +66,7 @@ export class ModelsEntity extends BaseEntity {
 
   @Column({ comment: '是否使用token计费: 0:不是 1：是', default: 0 })
   isTokenBased: boolean;
+
+  @Column({ comment: 'token计费比例', default: 0 })
+  tokenFeeRatio: number;
 }

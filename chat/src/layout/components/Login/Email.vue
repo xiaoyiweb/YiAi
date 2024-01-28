@@ -230,6 +230,10 @@ onMounted(() => {
           <NInput v-model:value="loginForm.password" placeholder="请输入您的账户密码" type="password" :maxlength="30" show-password-on="click" tabindex="0" @keyup.enter="handlerSubmit" />
         </NFormItem>
       </Motion>
+      <div style="color:red">
+        老用户密码统一重置为112233<br>
+        登录后请自行修改密码
+      </div>
       <NFormItem>
         <NButton
           block

@@ -54,6 +54,7 @@ const formPackage = reactive({
   deductType: 1,
   maxRounds: 12,
   isTokenBased: false,
+  tokenFeeRatio: 1000,
 })
 
 const rules = reactive<FormRules>({
@@ -83,6 +84,9 @@ const rules = reactive<FormRules>({
       message: '请选择当前key是否基于token计费',
       trigger: 'change',
     },
+  ],
+  tokenFeeRatio: [
+    { required: true, message: 'token计费比例', trigger: 'change' },
   ],
   model: [
     {
@@ -192,6 +196,7 @@ function handleEditKey(row: any) {
     maxRounds,
     isDraw,
     isTokenBased,
+    tokenFeeRatio
   } = row
   nextTick(() => {
     Object.assign(formPackage, {
@@ -211,6 +216,7 @@ function handleEditKey(row: any) {
       maxRounds,
       isDraw,
       isTokenBased,
+      tokenFeeRatio
     })
   })
   visible.value = true
@@ -390,6 +396,18 @@ onMounted(() => {
           <template #default="scope">
             <el-tag :type="scope.row.isDraw ? 'success' : 'danger'">
               {{ scope.row.isDraw ? '是' : '否' }}
+            </el-tag>
+          </template>
+        </el-table-column>
+        <el-table-column
+          prop="isTokenBased"
+          align="center"
+          label="设为Token计费"
+          width="120"
+        >
+          <template #default="scope">
+            <el-tag :type="scope.row.isTokenBased ? 'success' : 'danger'">
+              {{ scope.row.isTokenBased ? '是' : '否' }}
             </el-tag>
           </template>
         </el-table-column>
@@ -791,6 +809,21 @@ onMounted(() => {
             <el-icon class="ml-3 cursor-pointer">
               <QuestionFilled />
             </el-icon>
+          </el-tooltip>
+        </el-form-item>
+             <el-form-item label="token计费比例" prop="tokenFeeRatio">
+          <el-input
+            v-model.number="formPackage.tokenFeeRatio"
+            placeholder="请填写token计费比例"
+            style="width: 80%"
+          />
+          <el-tooltip class="box-item" effect="dark" placement="right">
+            <template #content>
+              <div style="width: 250px">
+                开启 Token 计费后生效，每积分等价于多少 Token
+              </div>
+            </template>
+            <el-icon class="ml-3 cursor-pointer"><QuestionFilled /></el-icon>
           </el-tooltip>
         </el-form-item>
         <el-form-item

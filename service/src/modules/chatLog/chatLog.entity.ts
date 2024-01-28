@@ -58,6 +58,9 @@ export class ChatLogEntity extends BaseEntity {
   @Column({ comment: '图片信息的string', nullable: true, type: 'text' })
   fileInfo: string;
 
+  @Column({ comment: '上传图片的信息', nullable: true, type: 'text' })
+  imageUrl: string;
+
   @Column({ comment: 'role system user assistant', nullable: true })
   role: string;
 

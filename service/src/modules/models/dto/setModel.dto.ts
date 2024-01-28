@@ -56,4 +56,6 @@ export class SetModelDto {
   //设置token计费
   @ApiProperty({ example: true, description: '是否使用token计费', required: false })
   isTokenBased: boolean;
+  @ApiProperty({ example: true, description: 'token计费比例', required: false })
+  tokenFeeRatio: number;
 }

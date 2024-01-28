@@ -8,12 +8,14 @@ export function fetchChatAPIProcess<T = any>(
     prompt: string
     appId?: number
     options?: { conversationId?: string; parentMessageId?: string; temperature: number }
+    imageUrl?:string
+    model?:string
     signal?: GenericAbortSignal
     onDownloadProgress?: (progressEvent: AxiosProgressEvent) => void },
 ) {
   return post<T>({
     url: '/chatgpt/chat-process',
-    data: { prompt: params.prompt, appId: params?.appId, options: params.options },
+    data: { prompt: params.prompt, appId: params?.appId, options: params.options,imageUrl: params.imageUrl,model: params.model},
     signal: params.signal,
     onDownloadProgress: params.onDownloadProgress,
   })
