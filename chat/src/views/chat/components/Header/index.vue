@@ -180,7 +180,7 @@ function handleSignIn() {
                 </div>
               </div>
             </NPopover> -->
-            <!--
+            
             <NTooltip v-if="isMobile" trigger="hover" :disabled="isMobile">
               <template #trigger>
                 <button
@@ -193,12 +193,13 @@ function handleSignIn() {
                 </button>
               </template>
               签到领福利
-            </NTooltip> -->
+            </NTooltip>
             <NTooltip trigger="hover" :disabled="isMobile">
               <template #trigger>
                 <button
                   class="flex h-8 w-8 items-center justify-center rounded border transition hover:bg-[#eef0f3] dark:border-neutral-700 dark:hover:bg-[#33373c]"
                   @click="handleExport"
+                   v-show="!isMobile"
                 >
                   <span class="text-base text-slate-500 dark:text-slate-400">
                     <SvgIcon
@@ -215,7 +216,7 @@ function handleSignIn() {
                   class="flex h-8 w-8 items-center justify-center rounded border transition hover:bg-[#eef0f3] dark:border-neutral-700 dark:hover:bg-[#33373c]"
                   @click="handleClear"
                 >
-                  <span class="text-base text-slate-500 dark:text-slate-400"><SvgIcon icon="material-symbols:delete-outline" /></span>
+                  <span class="text-base text-slate-500 dark:text-slate-400"><SvgIcon icon="material-symbols:delete-outline"/></span>
                 </button>
               </template>
               删除本页内容

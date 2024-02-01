@@ -80,7 +80,7 @@ onBeforeMount(() => {
       <a
         v-for="item in menuLista"
         :key="item.id"
-        :class="[isActive(item) ? 'text-[#4b9e5f] dark:text-[#86dfba]' : '']"
+        :class="[isActive(item) ? 'text-[#3076fd] dark:text-[#3076fd]' : '']"
         class="cursor-pointer text-center leading-4"
         @click="handleToPage(item)"
       >

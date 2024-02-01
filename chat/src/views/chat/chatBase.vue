@@ -122,7 +122,7 @@ const firstScroll = ref<boolean>(true)
 const tipsRef = ref<any>(null)
 const tipText = ref('')
 const tipsHeight = ref<any>(null)
-const dataBase64 = ref(null)
+let dataBase64 = ref(null)
 const fileName = ref('')
 const isImageFile = ref(false)
 const showDeleteIcon = ref(false)
@@ -279,6 +279,7 @@ async function uploadFile() {
   } finally {
     dataBase64.value = null
     curFile = null
+    showProgressModal.value = false
   }
 }
 
@@ -838,14 +839,14 @@ onUnmounted(() => {
           <NTooltip trigger="hover" placement="bottom-end" :disabled="isMobile">
             <template #trigger>
               <button
-                class="shrink0 flex h-8 w-8 items-center justify-center rounded border transition hover:bg-[#eef0f3] dark:border-neutral-700 dark:hover:bg-[#33373c]"
+                class="shrink0 flex h-8 w-8 items-center justify-center rounded border transition dark:border-neutral-700"
+                :class="{ 'bg-[#5782f4]': !usingContext }"
                 @click="toggleUsingContext"
               >
                 <span
-                  class=""
                   :class="{
                     'text-[#3076fd]': usingContext,
-                    'text-[#a8071a]': !usingContext,
+                    'text-[#ffffff]': !usingContext,
                   }"
                   ><SvgIcon
                     class="text-lg"
@@ -913,55 +914,42 @@ onUnmounted(() => {
               />
             </div>
           </div>
-
-          <NTooltip v-if="isMobile" trigger="hover" :disabled="isMobile">
+          <NTooltip trigger="hover" :disabled="isMobile">
             <template #trigger>
               <button
-                class="shrink0 flex h-8 w-8 items-center justify-center rounded border transition hover:bg-[#eef0f3] dark:border-neutral-700 dark:hover:bg-[#33373c]"
-                @click="handleSignIn"
-              >
-                <span class="text-base text-slate-500 dark:text-slate-400">
-                  <SvgIcon icon="streamline-emojis:wrapped-gift-1" />
-                </span>
-              </button>
-            </template>
-            签到领福利
-          </NTooltip>
-          <NPopover v-if="isMobile" trigger="click">
-            <template #trigger>
-              <button
-                class="shrink0 flex h-8 w-8 items-center justify-center rounded border transition dark:border-neutral-700 dark:hover:bg-[#33373c]"
+                class="shrink0 flex h-8 w-8 items-center justify-center rounded border transition dark:border-neutral-700"
+                @click="toggleUsingNetwork"
+                :class="{ 'bg-[#5782f4]': usingNetwork }"
               >
                 <span class="text-base text-slate-500 dark:text-slate-400">
                   <SvgIcon
-                    :icon="
-                      theme === 'dark'
-                        ? 'noto-v1:last-quarter-moon-face'
-                        : 'twemoji:sun'
-                    "
+                    icon="zondicons:network"
+                    class="cursor-pointer mb-0.5"
+                    :class="{
+                      'text-[#3076fd]': !usingNetwork,
+                      'text-[#fff]': usingNetwork,
+                    }"
                   />
                 </span>
               </button>
             </template>
-            <div>
-              <div class="flex items-center gap-4">
-                <template v-for="item of themeOptions" :key="item.key">
-                  <NButton
-                    size="small"
-                    :type="item.key === theme ? 'info' : undefined"
-                    @click="appStore.setTheme(item.key)"
-                  >
-                    <template #icon>
-                      <SvgIcon
-                        :icon="item.icon"
-                        :style="{ color: item.color }"
-                      />
-                    </template>
-                  </NButton>
-                </template>
-              </div>
-            </div>
-          </NPopover>
+            {{ usingNetwork ? '关闭' : '开启' }}联网访问
+          </NTooltip>
+          <button
+            v-show="isMobile"
+            @click="appStore.setTheme(theme === 'dark' ? 'light' : 'dark')"
+            class="shrink0 flex h-8 w-8 items-center justify-center rounded border transition dark:border-neutral-700 dark:hover:bg-[#33373c]"
+          >
+            <span class="text-base text-slate-500 dark:text-slate-400">
+              <SvgIcon
+                :icon="
+                  theme === 'dark'
+                    ? 'noto-v1:last-quarter-moon-face'
+                    : 'twemoji:sun'
+                "
+              />
+            </span>
+          </button>
           <NTooltip trigger="hover" :disabled="isMobile" placement="bottom">
             <template #trigger>
               <NButton
@@ -1109,7 +1097,7 @@ onUnmounted(() => {
                   </div>
                 </div>
                 <div class="flex justify-between items-center">
-                  <div
+                  <!-- <div
                     class="flex items-center text-neutral-400 cursor-pointer hover:text-[#3076fd]"
                   >
                     <span class="ml-2 mr-2 text-xs" @click="toggleUsingNetwork"
@@ -1136,7 +1124,7 @@ onUnmounted(() => {
                     >
                       |
                     </div>
-                  </div>
+                  </div> -->
 
                   <NButton
                     type="primary"
@@ -1176,7 +1164,7 @@ onUnmounted(() => {
         >{{ globaelConfig?.filingNumber }}</a
       >
     </div>
-    <!-- <NModal v-model:show="showProgressModal" :mask-closable="false">
+    <NModal v-model:show="showProgressModal" :mask-closable="false">
       <NCard
         style="width: 80%"
         title="上传文件中"
@@ -1192,7 +1180,7 @@ onUnmounted(() => {
           processing
         />
       </NCard>
-    </NModal> -->
+    </NModal>
   </div>
 </template>
 

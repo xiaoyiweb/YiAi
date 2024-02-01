@@ -221,7 +221,7 @@ watch(
                     class="text-2xl transition-all"
                     :class="[
                       isActive(item)
-                        ? 'text-[#4b9e5f] dark:text-[#86dfba]'
+                        ? 'text-[#3076fd] dark:text-[#3076fd]'
                         : '',
                     ]"
                   />
@@ -235,7 +235,7 @@ watch(
               class="text-[12px] mt-1 margin-auto whitespace-nowrap overflow-hidden"
               :class="[
                 isActive(item)
-                  ? 'text-[#4b9e5f] dark:text-[#86dfba] '
+                  ? 'text-[#3076fd] dark:text-[#86dfba] '
                   : 'text-[#999999]',
               ]"
             >{{ item.menuTipText }}</span> -->
@@ -334,7 +334,7 @@ watch(
 }
 
 .btns {
-  box-shadow: 0 5px 16px #16993b;
+  box-shadow: 0 5px 16px #0636e6;
 }
 
 .borderRadis {
