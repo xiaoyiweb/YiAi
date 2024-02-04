@@ -164,6 +164,19 @@ defineExpose({ textRef })
             style="margin-top: 0.5rem"
             v-if="imageUrl && isImageUrl"
           />
+          <a
+            :href="imageUrl"
+            target="_blank"
+            :class="{ 'file-2': isMobile, 'file-1': !isMobile }"
+          >
+            <img
+              src="@/assets/file.jpeg"
+              alt="文件"
+              class="h-auto rounded-md mb-1"
+              :class="{ 'file-2': isMobile, 'file-1': !isMobile }"
+              v-if="imageUrl && !isImageUrl"
+            />
+          </a>
         </div>
       </div>
     </div>
