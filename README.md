@@ -1,4 +1,4 @@
->本项目基于nineai 2.4.2开发，同时借鉴99AI整合版[99AI整合版](https://github.com/vastxie/NineAIQuickDeploy)，由此二开。
+>本项目基于nineai 2.4.2开发，同时借鉴99AI[99AI整合版](https://github.com/vastxie/NineAIQuickDeploy)，由此二开。
 >本项目仅供学习及参考，不可商用，由此造成的后果概不负责。
 
 # Yi - Ai 更新日志
