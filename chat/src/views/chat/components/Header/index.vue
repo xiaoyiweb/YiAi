@@ -61,11 +61,9 @@ const themeOptions: {
 ]
 
 const modelName = computed(() => {
-  if (!chatStore.activeConfig)
-    return
+  if (!chatStore.activeConfig) return
   const { modelTypeInfo, modelInfo } = chatStore.activeConfig
-  if (!modelTypeInfo || !modelInfo)
-    return
+  if (!modelTypeInfo || !modelInfo) return
   return `${modelTypeInfo?.label} / ${modelInfo.modelName}`
 })
 
@@ -85,8 +83,7 @@ function handleUpdateCollapsed() {
 
 function onScrollToTop() {
   const scrollRef = document.querySelector('#scrollRef')
-  if (scrollRef)
-    nextTick(() => (scrollRef.scrollTop = 0))
+  if (scrollRef) nextTick(() => (scrollRef.scrollTop = 0))
 }
 
 function handleExport() {
@@ -180,7 +177,7 @@ function handleSignIn() {
                 </div>
               </div>
             </NPopover> -->
-            
+
             <NTooltip v-if="isMobile" trigger="hover" :disabled="isMobile">
               <template #trigger>
                 <button
@@ -199,7 +196,7 @@ function handleSignIn() {
                 <button
                   class="flex h-8 w-8 items-center justify-center rounded border transition hover:bg-[#eef0f3] dark:border-neutral-700 dark:hover:bg-[#33373c]"
                   @click="handleExport"
-                   v-show="!isMobile"
+                  v-show="!isMobile"
                 >
                   <span class="text-base text-slate-500 dark:text-slate-400">
                     <SvgIcon
@@ -216,7 +213,9 @@ function handleSignIn() {
                   class="flex h-8 w-8 items-center justify-center rounded border transition hover:bg-[#eef0f3] dark:border-neutral-700 dark:hover:bg-[#33373c]"
                   @click="handleClear"
                 >
-                  <span class="text-base text-slate-500 dark:text-slate-400"><SvgIcon icon="material-symbols:delete-outline"/></span>
+                  <span class="text-base text-slate-500 dark:text-slate-400"
+                    ><SvgIcon icon="material-symbols:delete-outline"
+                  /></span>
                 </button>
               </template>
               删除本页内容
@@ -227,7 +226,9 @@ function handleSignIn() {
                   class="flex h-8 w-8 items-center justify-center rounded border transition hover:bg-[#eef0f3] dark:border-neutral-700 dark:hover:bg-[#33373c]"
                   @click="handleScrollBtm"
                 >
-                  <span class="text-base text-slate-500 dark:text-slate-400"><SvgIcon icon="material-symbols:keyboard-arrow-down" /></span>
+                  <span class="text-base text-slate-500 dark:text-slate-400"
+                    ><SvgIcon icon="material-symbols:keyboard-arrow-down"
+                  /></span>
                 </button>
               </template>
               滚动到底部

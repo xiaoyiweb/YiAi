@@ -26,7 +26,7 @@ function createMainWindow() {
 
 	if (app.isPackaged) {
     // mainWindow.loadFile(filePath)
-    mainWindow.loadURL('https://ai.jiangly.com')
+    // mainWindow.loadURL('https://ai.jiangly.com')
   }
   else {
     mainWindow.loadURL('http://127.0.0.1:1002')

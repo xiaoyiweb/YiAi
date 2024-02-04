@@ -1,4 +1,4 @@
-import { GlobalConfigService } from '../globalConfig/globalConfig.service';
+import { GlobalConfigService } from './../globalConfig/globalConfig.service';
 import { Injectable, Logger, OnModuleInit } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { UserBalanceEntity } from '../userBalance/userBalance.entity';
@@ -13,7 +13,7 @@ export class TaskService {
     private readonly userBalanceEntity: Repository<UserBalanceEntity>,
     private readonly globalConfigService: GlobalConfigService,
     private readonly modelsService: ModelsService,
-  ) {}
+  ) { }
 
   /* 每小时刷新一次微信的token */
   @Cron(CronExpression.EVERY_HOUR)
@@ -40,8 +40,8 @@ export class TaskService {
   }
 
   /* 每小时检测一次授权 */
-  @Cron('0 0 */5 * *')
-  refreshBaiduAccesstoken() {
-    this.modelsService.refreshBaiduAccesstoken();
-  }
+  // @Cron('0 0 */5 * *')
+  // refreshBaiduAccesstoken() {
+  //   this.modelsService.refreshBaiduAccesstoken();
+  // }
 }

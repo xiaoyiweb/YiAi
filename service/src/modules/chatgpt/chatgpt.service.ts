@@ -2,8 +2,8 @@ import { UploadService } from './../upload/upload.service';
 import { UserService } from './../user/user.service';
 import { ConfigService } from 'nestjs-config';
 import { HttpException, HttpStatus, Injectable, OnModuleInit, Logger } from '@nestjs/common';
-import type { ChatGPTAPIOptions, ChatMessage, SendMessageOptions } from 'chatgpt-nine-ai';
-import { Request, Response } from 'express';
+import type { ChatGPTAPIOptions, ChatMessage, SendMessageOptions } from 'chatgpt-ai-web';
+import e, { Request, Response } from 'express';
 import { OpenAiErrorCodeMessage } from '@/common/constants/errorMessage.constant';
 import {
   compileNetwork,
@@ -97,7 +97,7 @@ export class ChatgptService implements OnModuleInit {
   };
 
   async onModuleInit() {
-    let chatgpt = await importDynamic('chatgpt-nine-ai');
+    let chatgpt = await importDynamic('chatgpt-ai-web');
     let KeyvRedis = await importDynamic('@keyv/redis');
     let Keyv = await importDynamic('keyv');
     chatgpt = chatgpt?.default ? chatgpt.default : chatgpt;
@@ -165,7 +165,7 @@ export class ChatgptService implements OnModuleInit {
     /* 不同场景会变更其信息 */
     let setSystemMessage = systemMessage;
     const { parentMessageId } = options;
-    const { prompt ,imageUrl,model:activeModel} = body;
+    const { prompt, imageUrl, model: activeModel } = body;
     const { groupId, usingNetwork } = options;
     // const { model = 3 } = options;
     /* 获取当前对话组的详细配置信息 */
@@ -184,7 +184,7 @@ export class ChatgptService implements OnModuleInit {
       throw new HttpException('当前流程所需要的模型已被管理员下架、请联系管理员上架专属模型！', HttpStatus.BAD_REQUEST);
     }
 
-    const { deduct, isTokenBased, deductType, key: modelKey, secret, modelName, id: keyId, accessToken } = currentRequestModelKey;
+    const { deduct, isTokenBased, tokenFeeRatio, deductType, key: modelKey, secret, modelName, id: keyId, accessToken } = currentRequestModelKey;
     /* 用户状态检测 */
     await this.userService.checkUserStatus(req.user);
     /* 用户余额检测 */
@@ -260,7 +260,7 @@ export class ChatgptService implements OnModuleInit {
             userId: req.user.id,
             type: DeductionKey.CHAT_TYPE,
             prompt,
-            imageUrl,
+            imageUrl:response?.imageUrl,
             activeModel,
             answer: '',
             promptTokens: prompt_tokens,
@@ -307,7 +307,7 @@ export class ChatgptService implements OnModuleInit {
           /* 当用户回答一般停止时 也需要扣费 */
           let charge = deduct;
           if (isTokenBased === true) {
-            charge = deduct * total_tokens;
+            charge = Math.ceil((deduct * total_tokens) / tokenFeeRatio);
           }
           await this.userBalanceService.deductFromBalance(req.user.id, `model${deductType === 1 ? 3 : 4}`, charge, total_tokens);
         });
@@ -320,11 +320,11 @@ export class ChatgptService implements OnModuleInit {
           const { context: messagesHistory } = await this.nineStore.buildMessageFromParentMessageId(usingNetwork ? netWorkPrompt : prompt, {
             parentMessageId,
             systemMessage,
-            imageUrl,
-            activeModel,
             maxModelToken: maxToken,
             maxResponseTokens: maxTokenRes,
             maxRounds: addOneIfOdd(rounds),
+            imageUrl,
+            activeModel,
           });
           let firstChunk = true;
           response = await sendMessageFromOpenAi(messagesHistory, {
@@ -332,8 +332,9 @@ export class ChatgptService implements OnModuleInit {
             maxTokenRes,
             apiKey: modelKey,
             model,
-            imageUrl,
+            prompt,
             activeModel,
+            imageUrl,
             temperature,
             proxyUrl: proxyResUrl,
             onProgress: (chat) => {
@@ -341,7 +342,7 @@ export class ChatgptService implements OnModuleInit {
               lastChat = chat;
               firstChunk = false;
             },
-          });
+          },this.uploadService);
           isSuccess = true;
         }
 
@@ -385,7 +386,6 @@ export class ChatgptService implements OnModuleInit {
           isSuccess = true;
         }
 
-        /* 分别将本次用户输入的 和 机器人返回的分两次存入到 store */
         const userMessageData: MessageInfo = {
           id: this.nineStore.getUuid(),
           text: prompt,
@@ -407,7 +407,8 @@ export class ChatgptService implements OnModuleInit {
           text: response.text,
           role: 'assistant',
           name: undefined,
-          usage: response.usage,
+          usage: response?.usage,
+          imageUrl: response?.imageUrl,
           parentMessageId: userMessageData.id,
           conversationId: response?.conversationId,
         };
@@ -415,7 +416,6 @@ export class ChatgptService implements OnModuleInit {
         await this.nineStore.setData(assistantMessageData);
 
         othersInfo = { model, parentMessageId: userMessageData.id };
-        /* 回答完毕 */
       } else {
         const { key, maxToken, maxTokenRes, proxyResUrl } = await this.formatModelToken(currentRequestModelKey);
         const { parentMessageId, completionParams, systemMessage } = mergedOptions;
@@ -431,17 +431,22 @@ export class ChatgptService implements OnModuleInit {
           temperature,
           proxyUrl: proxyResUrl,
           onProgress: null,
+          prompt,
         });
       }
-
       /* 统一最终输出格式 */
-      const formatResponse = await unifiedFormattingResponse(keyType, response, othersInfo);
-      const { prompt_tokens = 0, completion_tokens = 0, total_tokens = 0 } = formatResponse.usage;
-
+      let usage = null;
+      let formatResponse = null;
+      if (model.includes('dall')) {
+        usage = response.detail?.usage || { prompt_tokens: 1, completion_tokens: 1, total_tokens: 2 };
+      } else {
+        formatResponse = await unifiedFormattingResponse(keyType, response, othersInfo);
+      }
+      const { prompt_tokens, completion_tokens, total_tokens } = model.includes('dall') ? usage : formatResponse.usage;
       /* 区分扣除普通还是高级余额  model3: 普通余额  model4： 高级余额 */
       let charge = deduct;
       if (isTokenBased === true) {
-        charge = deduct * total_tokens;
+        charge = Math.ceil((deduct * total_tokens) / tokenFeeRatio);
       }
       await this.userBalanceService.deductFromBalance(req.user.id, `model${deductType === 1 ? 3 : 4}`, charge, total_tokens);
 
@@ -457,13 +462,13 @@ export class ChatgptService implements OnModuleInit {
         userId: req.user.id,
         type: DeductionKey.CHAT_TYPE,
         prompt,
-        imageUrl,
+        imageUrl: response?.imageUrl,
         activeModel,
         answer: '',
         promptTokens: prompt_tokens,
         completionTokens: 0,
         totalTokens: total_tokens,
-        model: formatResponse.model,
+        model: model,
         role: 'user',
         groupId,
         requestOptions: JSON.stringify({
@@ -479,7 +484,8 @@ export class ChatgptService implements OnModuleInit {
         userId: req.user.id,
         type: DeductionKey.CHAT_TYPE,
         prompt: prompt,
-        answer: formatResponse?.text,
+        imageUrl: response?.imageUrl,
+        answer: response.text,
         promptTokens: prompt_tokens,
         completionTokens: completion_tokens,
         totalTokens: total_tokens,
@@ -501,7 +507,7 @@ export class ChatgptService implements OnModuleInit {
         }),
       });
       Logger.debug(
-        `本次调用: ${req.user.id} model: ${model} key -> ${key}, 模型名称: ${modelName}, 最大回复token: ${maxResponseTokens}`,
+        `用户ID: ${req.user.id} 模型名称: ${modelName}-${activeModel}, 消耗token: ${total_tokens}, 消耗积分： ${charge}`,
         'ChatgptService',
       );
       const userBalance = await this.userBalanceService.queryUserBalance(req.user.id);
@@ -599,7 +605,7 @@ export class ChatgptService implements OnModuleInit {
     await this.userBalanceService.validateBalance(req, 'mjDraw', money);
     let images = [];
     /* 从3的卡池随机拿一个key */
-    const detailKeyInfo = await this.modelsService.getRandomDrawKey();
+    const detailKeyInfo = await this.modelsService.getCurrentModelKeyInfo('dall-e-3');
     const keyId = detailKeyInfo?.id;
     const { key, proxyResUrl } = await this.formatModelToken(detailKeyInfo);
     Logger.log(`draw paompt info <==**==> ${body.prompt}, key ===> ${key}`, 'DrawService');

@@ -1,6 +1,6 @@
 {
-  "name": "nine-ai",
-  "version": "2.4.5",
+  "name": "yi-ai",
+  "version": "2.5.0",
   "description": "使用 Nestjs 和 Vue3 搭建的 AIGC 生态社区 持续集成AI能力到社区之中",
   "main": "index.js",
   "author": "longyanjiang",
@@ -39,11 +39,8 @@
   "devDependencies": {},
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/longyanjiang/Nine-Ai.git"
+    "url": ""
   },
   "license": "MID",
-  "bugs": {
-    "url": "https://github.com/longyanjiang/Nine-Ai/issues"
-  },
-  "homepage": "https://github.com/longyanjiang/Nine-Ai#readme"
+  "homepage": ""
 }

@@ -15,7 +15,7 @@ export function defaultSetting(): UserState {
   return {
     userInfo: {
       avatar: 'https://public-1300678944.cos.ap-shanghai.myqcloud.com/blog/1681310872890image.png',
-      name: 'Nine Ai',
+      name: 'Yi Ai',
     },
   }
 }

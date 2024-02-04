@@ -21,6 +21,7 @@ interface Props {
 interface Emit {
   (ev: 'regenerate'): void
   (ev: 'delete'): void
+  (ev: 'video'): void
 }
 
 const props = defineProps<Props>()
@@ -81,6 +82,10 @@ function handleDetele() {
   emit('delete')
 }
 
+function hendleVideo() {
+  emit('video')
+}
+
 function handleCopy() {
   copyText({ text: props.text ?? '' })
   props.text && ms.success('复制成功！')
@@ -128,9 +133,10 @@ function handleRegenerate() {
           @regenerate="handleRegenerate"
           @copy="handleCopy"
           @delete="handleDetele"
+          @video="hendleVideo"
           :imageUrl="imageUrl"
         />
-        <div class="flex flex-col">
+        <!-- <div class="flex flex-col">
           <button
             v-if="!inversion"
             class="flex mb-2 transition text-neutral-300 hover:text-neutral-800 dark:hover:text-neutral-300"
@@ -150,7 +156,7 @@ function handleRegenerate() {
               <SvgIcon icon="ri:more-2-fill" />
             </button>
           </NDropdown>
-        </div>
+        </div> -->
       </div>
     </div>
   </div>

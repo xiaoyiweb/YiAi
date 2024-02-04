@@ -2,6 +2,7 @@ import Keyv from 'keyv';
 import { v4 as uuidv4 } from 'uuid';
 import { get_encoding } from '@dqbd/tiktoken';
 import { Logger } from '@nestjs/common';
+import { includes } from 'lodash';
 
 const tokenizer = get_encoding('cl100k_base');
 
@@ -96,7 +97,7 @@ export class NineStore implements NineStoreInterface {
     let nextNumTokensEstimate = 0;
     // messages.push({ role: 'system', content: systemMessage, name })
     if (systemMessage) {
-      const specialModels = ['gemini-pro', 'ERNIE', 'qwen', 'SparkDesk', 'hunyuan'];
+      const specialModels = ['gemini-pro', 'ERNIE','hunyuan'];
       const isSpecialModel = activeModel && specialModels.some((specialModel) => activeModel.includes(specialModel));
       if (isSpecialModel) {
         messages.push({ role: 'user', content: systemMessage, name });
@@ -146,7 +147,7 @@ export class NineStore implements NineStoreInterface {
       let content = text; // 默认情况下使用text作为content
 
       // 特别处理包含 imageUrl 的消息
-      if (role === 'user' && imageUrl) {
+      if (imageUrl) {
         if (activeModel === 'gpt-4-vision-preview') {
           content = [
             { type: 'text', text: text },

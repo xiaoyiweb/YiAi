@@ -13,7 +13,7 @@ interface UserInfo {
 
 @Injectable()
 export class DatabaseService implements OnModuleInit {
-  constructor(private connection: Connection) {}
+  constructor(private connection: Connection) { }
   async onModuleInit() {
     await this.checkSuperAdmin();
     await this.checkSiteBaseConfig();
@@ -23,7 +23,7 @@ export class DatabaseService implements OnModuleInit {
   async checkSuperAdmin() {
     const user = await this.connection.query(`SELECT * FROM users WHERE role = 'super'`);
     if (!user || user.length === 0) {
-      const superPassword = bcrypt.hashSync('123456', 10);
+      const superPassword = bcrypt.hashSync('123456', 10); //初始密码
       const adminPassword = bcrypt.hashSync('123456', 10);
       const superEmail = 'default@cooper.com';
       const adminEmail = 'defaultAdmin@cooper.com';
@@ -44,7 +44,7 @@ export class DatabaseService implements OnModuleInit {
       const userId = user.insertId;
       const balance = await this.connection.query(`INSERT INTO balance (userId, balance, usesLeft, paintCount) VALUES ('${userId}', 0, 1000, 100)`);
       Logger.log(
-        `初始化创建${role}用户成功、用户名为[${username}]、初始密码为[${username === 'super' ? '123456' : '123456'}] ==============> 请注意查阅`,
+        `初始化创建${role}用户成功、用户名为[${username}]、初始密码为[${username === 'super' ? 'nine-super' : '123456'}] ==============> 请注意查阅`,
         'DatabaseService',
       );
     } catch (error) {
@@ -68,17 +68,7 @@ export class DatabaseService implements OnModuleInit {
   /* 创建基础的网站数据 */
   async createBaseSiteConfig() {
     try {
-      const code = `
-  <script>
-  var _hmt = _hmt || [];
-  (function() {
-    var hm = document.createElement("script");
-    hm.src = "https://hm.baidu.com/hm.js?cb8c9a3bcadbc200e950b05f9c61a385";
-    var s = document.getElementsByTagName("script")[0];
-    s.parentNode.insertBefore(hm, s);
-  })();
-  </script>
-`;
+      const code = ``;
 
       const noticeInfo = `
 #### YiAi 欢迎您
@@ -88,21 +78,21 @@ export class DatabaseService implements OnModuleInit {
 `;
 
       const defaultConfig = [
-        { configKey: 'siteName', configVal: 'Nine Ai', public: 1, encry: 0 },
-        { configKey: 'qqNumber', configVal: '840814166', public: 1, encry: 0 },
-        { configKey: 'vxNumber', configVal: 'wangpanzhu321', public: 1, encry: 0 },
+        { configKey: 'siteName', configVal: 'Yi Ai', public: 1, encry: 0 },
+        { configKey: 'qqNumber', configVal: '805239273', public: 1, encry: 0 },
+        { configKey: 'vxNumber', configVal: 'HelloWordYi819', public: 1, encry: 0 },
         { configKey: 'robotAvatar', configVal: '', public: 1, encry: 0 },
         {
           configKey: 'userDefautlAvatar',
-          configVal: 'https://public-1300678944.cos.ap-shanghai.myqcloud.com/blog/1682571295452image.png',
+          configVal: '',
           public: 0,
           encry: 0,
         },
         { configKey: 'baiduCode', configVal: code, public: 1, encry: 0 },
-        { configKey: 'baiduSiteId', configVal: '19024441', public: 0, encry: 0 },
+        { configKey: 'baiduSiteId', configVal: '', public: 0, encry: 0 },
         {
           configKey: 'baiduToken',
-          configVal: '121.a1600b9b60910feea2ef627ea9776a6f.YGP_CWCOA2lNcIGJ27BwXGxa6nZhBQyLUS4XVaD.TWt9TA',
+          configVal: '',
           public: 0,
           encry: 0,
         },
@@ -110,25 +100,25 @@ export class DatabaseService implements OnModuleInit {
         { configKey: 'openaiBaseUrl', configVal: 'https://api.openai.com', public: 0, encry: 0 },
         { configKey: 'noticeInfo', configVal: noticeInfo, public: 1, encry: 0 },
 
-        { configKey: 'registerVerifyEmailTitle', configVal: 'NineTeam团队账号验证', public: 0, encry: 0 },
+        { configKey: 'registerVerifyEmailTitle', configVal: 'Yi Ai团队账号验证', public: 0, encry: 0 },
         {
           configKey: 'registerVerifyEmailDesc',
-          configVal: '欢迎使用Nine Team团队的产品服务,请在五分钟内完成你的账号激活,点击以下按钮激活您的账号，',
+          configVal: '欢迎使用Yi Ai团队的产品服务,请在五分钟内完成你的账号激活,点击以下按钮激活您的账号，',
           public: 0,
           encry: 0,
         },
-        { configKey: 'registerVerifyEmailFrom', configVal: 'NineTeam团队', public: 0, encry: 0 },
+        { configKey: 'registerVerifyEmailFrom', configVal: 'Yi Ai团队', public: 0, encry: 0 },
         { configKey: 'registerVerifyExpir', configVal: '1800', public: 0, encry: 0 },
-        { configKey: 'registerSuccessEmailTitle', configVal: 'NineTeam团队账号激活成功', public: 0, encry: 0 },
-        { configKey: 'registerSuccessEmailTeamName', configVal: 'NineTeam团队', public: 0, encry: 0 },
+        { configKey: 'registerSuccessEmailTitle', configVal: 'Yi Ai账号激活成功', public: 0, encry: 0 },
+        { configKey: 'registerSuccessEmailTeamName', configVal: 'Yi Ai', public: 0, encry: 0 },
         {
           configKey: 'registerSuccessEmaileAppend',
-          configVal: ',请妥善保管您的账号，我们将为您赠送50次对话额度和5次绘画额度、祝您使用愉快',
+          configVal: ',请妥善保管您的账号，祝您使用愉快',
           public: 0,
           encry: 0,
         },
-        { configKey: 'registerFailEmailTitle', configVal: 'NineTeam账号激活失败', public: 0, encry: 0 },
-        { configKey: 'registerFailEmailTeamName', configVal: 'NineTeam团队', public: 0, encry: 0 },
+        { configKey: 'registerFailEmailTitle', configVal: 'Yi Ai账号激活失败', public: 0, encry: 0 },
+        { configKey: 'registerFailEmailTeamName', configVal: 'Yi Ai团队', public: 0, encry: 0 },
         /* 注册默认设置 */
         { configKey: 'registerSendStatus', configVal: '1', public: 1, encry: 0 },
         { configKey: 'registerSendModel3Count', configVal: '30', public: 1, encry: 0 },
@@ -136,16 +126,16 @@ export class DatabaseService implements OnModuleInit {
         { configKey: 'registerSendDrawMjCount', configVal: '3', public: 1, encry: 0 },
         { configKey: 'firstRegisterSendStatus', configVal: '1', public: 1, encry: 0 },
         { configKey: 'firstRegisterSendRank', configVal: '500', public: 1, encry: 0 },
-        { configKey: 'firstRregisterSendModel3Count', configVal: '20', public: 1, encry: 0 },
-        { configKey: 'firstRregisterSendModel4Count', configVal: '2', public: 1, encry: 0 },
-        { configKey: 'firstRregisterSendDrawMjCount', configVal: '3', public: 1, encry: 0 },
+        { configKey: 'firstRregisterSendModel3Count', configVal: '10', public: 1, encry: 0 },
+        { configKey: 'firstRregisterSendModel4Count', configVal: '10', public: 1, encry: 0 },
+        { configKey: 'firstRregisterSendDrawMjCount', configVal: '10', public: 1, encry: 0 },
         { configKey: 'inviteSendStatus', configVal: '1', public: 1, encry: 0 },
-        { configKey: 'inviteGiveSendModel3Count', configVal: '30', public: 1, encry: 0 },
-        { configKey: 'inviteGiveSendModel4Count', configVal: '3', public: 1, encry: 0 },
-        { configKey: 'inviteGiveSendDrawMjCount', configVal: '1', public: 1, encry: 0 },
+        { configKey: 'inviteGiveSendModel3Count', configVal: '0', public: 1, encry: 0 },
+        { configKey: 'inviteGiveSendModel4Count', configVal: '0', public: 1, encry: 0 },
+        { configKey: 'inviteGiveSendDrawMjCount', configVal: '0', public: 1, encry: 0 },
         { configKey: 'invitedGuestSendModel3Count', configVal: '10', public: 1, encry: 0 },
-        { configKey: 'invitedGuestSendModel4Count', configVal: '1', public: 1, encry: 0 },
-        { configKey: 'invitedGuestSendDrawMjCount', configVal: '1', public: 1, encry: 0 },
+        { configKey: 'invitedGuestSendModel4Count', configVal: '10', public: 1, encry: 0 },
+        { configKey: 'invitedGuestSendDrawMjCount', configVal: '10', public: 1, encry: 0 },
         { configKey: 'isVerifyEmail', configVal: '1', public: 1, encry: 0 },
       ];
 

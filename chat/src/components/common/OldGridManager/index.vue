@@ -317,7 +317,7 @@ onUnmounted(() => {
 		}
 
 		.item-loading {
-			background: url(../../assets/img-bg.png) no-repeat center center;
+      background: url(@/assets/img-bg.png) no-repeat center center;
 			filter: blur(20px);
 			position: absolute;
 			top: 0;

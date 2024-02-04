@@ -7,8 +7,8 @@ import { NButton } from 'naive-ui'
 
 const proxyImgBase = ref('')
 
-const mode1Url = 'https://chevereto.jiangly.com/images/2023/11/21/61888bd4ede4.png'
-const mode2Url = 'https://chevereto.jiangly.com/images/2023/11/19/shoes.jpg'
+const mode1Url = ''
+const mode2Url = ''
 
 
 const canvasRef = ref<any>(null)

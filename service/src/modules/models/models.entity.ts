@@ -69,4 +69,8 @@ export class ModelsEntity extends BaseEntity {
 
   @Column({ comment: 'token计费比例', default: 0 })
   tokenFeeRatio: number;
+
+  @Column({ comment: 'key权重', default: 1 })
+  modelOrder: number;
+
 }

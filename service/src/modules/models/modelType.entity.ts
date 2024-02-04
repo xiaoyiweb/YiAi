@@ -42,4 +42,7 @@ export class ModelsTypeEntity extends BaseEntity {
 
   @Column({ comment: '是否为特殊模型、可以提供联想翻译、思维导图等特殊操作', default: 0 })
   isUseTool: boolean;
+
+  @Column({ comment: '模型排序', default: 1 })
+  modelOrder: number;
 }

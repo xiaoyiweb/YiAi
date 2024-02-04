@@ -13,6 +13,9 @@ import {
   useDialog,
   useMessage,
   NAlert,
+  NSpace,
+  NPopselect,
+  NText,
 } from 'naive-ui'
 import type { MessageRenderMessage } from 'naive-ui'
 
@@ -40,7 +43,7 @@ import {
   useGlobalStoreWithOut,
 } from '@/store'
 import { fetchQueryOneCatAPI } from '@/api/appStore'
-import { fetchChatAPIProcess } from '@/api'
+import { fetchChatAPIProcess, fetchVideoAPIProcess } from '@/api'
 import { t } from '@/locales'
 import { router } from '@/router'
 const uploadUrl = ref(`${import.meta.env.VITE_GLOB_API_URL}/upload/file`)
@@ -84,6 +87,38 @@ const themeOptions: {
     icon: 'noto-v1:last-quarter-moon-face',
   },
 ]
+
+const videoOptions: {
+  label: string
+  value: string
+}[] = [
+  {
+    value: 'alloy',
+    label: 'alloy',
+  },
+  {
+    value: 'echo',
+    label: 'echo',
+  },
+  {
+    value: 'fable',
+    label: 'fable',
+  },
+  {
+    value: 'nova',
+    label: 'nova',
+  },
+  {
+    value: 'onyx',
+    label: 'onyx',
+  },
+  {
+    value: 'shimmer',
+    label: 'shimmer',
+  },
+]
+
+let currentVideo = ref('alloy')
 const theme = computed(() => appStore.theme)
 
 const globaelConfig = computed(() => authStore.globalConfig)
@@ -198,6 +233,48 @@ function handleSignIn() {
   useGlobalStore.updateSignInDialog(true)
 }
 
+const audioRef = ref(null)
+const audioState = ref('Play')
+function hendleVideo(item) {
+  var data = JSON.stringify({
+    model: 'tts-1',
+    input: item.text,
+    voice: 'alloy',
+  })
+  axios({
+    method: 'post',
+    url: 'https://api.oneapi.dwyu.cn/v1/audio/speech',
+    headers: {
+      Authorization:
+        'Bearer sk-z726fTNvD1jzSBZ42e8dF919840b48A5820e4e5d9d4e70A4',
+      'Content-Type': 'application/json',
+    },
+    data: data,
+  })
+    .then(function (response) {
+      console.log('--response.data', response.data)
+      const audio = audioRef.value
+      const blob = new Blob([response.data], { type: 'audio/mpeg' })
+      if (!audio) return
+      audio.src = URL.createObjectURL(blob)
+      console.log(audio)
+      audio.load()
+      audio.play()
+
+      // if (audio.paused) {
+      //   audio.play()
+      //   audioState.value = 'Stop'
+      // } else {
+      //   audio.pause()
+      //   audio.currentTime = 0
+      //   audioState.value = 'Play'
+      // }
+    })
+    .catch(function (error) {
+      console.error('There was an error fetching the audio data', error)
+    })
+}
+
 // 解析文件 gpt-4-all逆向
 let curFile: File | null
 
@@ -279,7 +356,6 @@ async function uploadFile() {
   } finally {
     dataBase64.value = null
     curFile = null
-    showProgressModal.value = false
   }
 }
 
@@ -426,6 +502,7 @@ async function onConversation(msg?: string) {
               usage: data?.detail?.usage,
               error: false,
               loading: true,
+              imageUrl: data?.imageUrl,
               conversationOptions: {
                 conversationId: data?.conversationId,
                 parentMessageId: data?.id,
@@ -594,6 +671,7 @@ async function onConversation(msg?: string) {
       return
     }
     updateGroupChat(dataSources.value.length - 1, {
+      imageUrl: data.imageUrl,
       dateTime: new Date().toLocaleString(),
       text: errorMessage,
       inversion: false,
@@ -607,6 +685,8 @@ async function onConversation(msg?: string) {
     loading.value = false
     isStreamIn.value = false
     imageUrl = null
+    typingStatusEnd.value = true
+    scrollToBottom()
   }
 }
 
@@ -818,6 +898,7 @@ onUnmounted(() => {
                 :imageUrl="item.imageUrl"
                 @regenerate="handleSubmit(index)"
                 @delete="handleDelete(item)"
+                @video="hendleVideo(item)"
               />
               <div class="sticky bottom-1 left-0 flex justify-center">
                 <NButton v-if="loading" @click="handleStop">
@@ -844,6 +925,7 @@ onUnmounted(() => {
                 @click="toggleUsingContext"
               >
                 <span
+                  class=""
                   :class="{
                     'text-[#3076fd]': usingContext,
                     'text-[#ffffff]': !usingContext,
@@ -971,7 +1053,6 @@ onUnmounted(() => {
           </NTooltip>
         </div>
       </div>
-
       <div
         class="m-auto max-w-screen-4xl"
         :class="[isMobile ? 'px-2 py-1' : 'px-4 py-2']"
@@ -1097,35 +1178,6 @@ onUnmounted(() => {
                   </div>
                 </div>
                 <div class="flex justify-between items-center">
-                  <!-- <div
-                    class="flex items-center text-neutral-400 cursor-pointer hover:text-[#3076fd]"
-                  >
-                    <span class="ml-2 mr-2 text-xs" @click="toggleUsingNetwork"
-                      >{{ usingNetwork ? '关闭' : '开启' }}联网访问</span
-                    >
-                    <NTooltip trigger="hover" :disabled="isMobile">
-                      <template #trigger>
-                        <SvgIcon
-                          icon="zondicons:network"
-                          class="cursor-pointer mb-0.5"
-                          :class="[
-                            {
-                              'text-[#3076fd]': usingNetwork,
-                              '': !usingNetwork,
-                            },
-                          ]"
-                          @click="toggleUsingNetwork"
-                        />
-                      </template>
-                      {{ usingNetwork ? '关闭联网模式' : '开启联网模式' }}
-                    </NTooltip>
-                    <div
-                      class="mx-4 h-full text-neutral-300 dark:text-neutral-600"
-                    >
-                      |
-                    </div>
-                  </div> -->
-
                   <NButton
                     type="primary"
                     size="small"
@@ -1181,6 +1233,10 @@ onUnmounted(() => {
         />
       </NCard>
     </NModal>
+
+    <!-- <audio ref="audioRef" controls>
+      <source type="audio/mpeg" />
+    </audio> -->
   </div>
 </template>
 

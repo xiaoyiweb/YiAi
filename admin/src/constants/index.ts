@@ -174,6 +174,7 @@ export const MODEL_LIST = [
   "gpt-4-vision-preview",
   "gpt-4-all",
   "gpt-4-0125-preview",
+  'dall-e-3',
   // claude
   "claude-2.0",
   "claude-2.1",
@@ -293,6 +294,7 @@ export const MODELSMAPLIST = {
     "gpt-4-vision-preview",
     "gpt-4-all",
     "gpt-4-0125-preview",
+    'dall-e-3',
     // claude
     "claude-2.0",
     "claude-2.1",

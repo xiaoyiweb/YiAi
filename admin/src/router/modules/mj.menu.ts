@@ -23,21 +23,21 @@ const routes: RouteRecordRaw = {
         icon: 'menu-history',
       },
     },
-    {
-      path: 'config',
-      name: 'mjManage',
-      component: () => import('@/views/mjDraw/index.vue'),
-      meta: {
-        title: '参数配置',
-        icon: 'menu-params',
-      },
-    },
+    // {
+    //   path: 'config',
+    //   name: 'mjManage',
+    //   component: () => import('@/views/mjDraw/index.vue'),
+    //   meta: {
+    //     title: '参数配置',
+    //     icon: 'menu-params',
+    //   },
+    // },
     {
       path: 'proxy',
       name: 'mjProxyManage',
       component: () => import('@/views/mjDraw/proxy.vue'),
       meta: {
-        title: '更多设置',
+        title: '参数配置',
         icon: 'menu-proxy',
       },
     },

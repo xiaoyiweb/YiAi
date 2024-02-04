@@ -59,7 +59,7 @@ const demoData = `
 `
 
 const prompt = ref('')
-const initValue = `# NineAi
+const initValue = `# YiAi
 ## 基础功能
 - 支持AI聊天
 - 支持GPT4

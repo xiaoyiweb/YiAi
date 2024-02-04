@@ -1,4 +1,4 @@
-import { AddBadWordDto } from '../../badwords/dto/addBadWords.dto';
+import { AddBadWordDto } from './../../badwords/dto/addBadWords.dto';
 import { IsNotEmpty, MinLength, MaxLength, IsEmail, IsOptional, IsNumber } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
@@ -27,6 +27,9 @@ export class SetModelDto {
   @ApiProperty({ example: 1, description: 'key的权重' })
   keyWeight: number;
 
+  @ApiProperty({ example: 1, description: '模型排序' })
+  modelOrder: number;
+
   @ApiProperty({ example: 4096, description: '模型支持的最大TOken数量', required: true })
   maxModelTokens: number;
 
@@ -53,9 +56,10 @@ export class SetModelDto {
 
   @ApiProperty({ example: true, description: '是否设置为绘画Key', required: false })
   isDraw: boolean;
-  //设置token计费
+
   @ApiProperty({ example: true, description: '是否使用token计费', required: false })
   isTokenBased: boolean;
+
   @ApiProperty({ example: true, description: 'token计费比例', required: false })
   tokenFeeRatio: number;
 }

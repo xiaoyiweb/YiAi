@@ -4,11 +4,13 @@ import MarkdownIt from 'markdown-it'
 import mdKatex from '@traptitech/markdown-it-katex'
 import mila from 'markdown-it-link-attributes'
 import hljs from 'highlight.js'
-import { NButton, NIcon } from 'naive-ui'
+import { NButton, NIcon, NImage } from 'naive-ui'
 import { Copy, Delete } from '@icon-park/vue-next'
 import { useAppStore } from '@/store'
 import { useBasicLayout } from '@/hooks/useBasicLayout'
 import { t } from '@/locales'
+import { SvgIcon } from '@/components/common'
+
 interface Props {
   inversion?: boolean
   error?: boolean
@@ -22,6 +24,7 @@ interface Emit {
   (ev: 'regenerate'): void
   (ev: 'delete'): void
   (ev: 'copy'): void
+  (ev: 'video'): void
 }
 
 const props = defineProps<Props>()
@@ -106,6 +109,10 @@ function handleRegenerate() {
   emit('regenerate')
 }
 
+function hendleVideo() {
+  emit('video')
+}
+
 function handleCopy() {
   emit('copy')
 }
@@ -118,106 +125,137 @@ defineExpose({ textRef })
 </script>
 
 <template>
-  <div :class="wrapClass" class="w-full" style="width: auto">
-    <div ref="textRef" class="leading-relaxed break-words">
-      <div v-if="!inversion" class="flex flex-col items-start">
-        <div class="w-full">
-          <div
-            v-if="!asRawText"
-            class="w-full markdown-body"
-            :class="[{ 'markdown-body-generate': loading }]"
-            v-html="text"
-          />
-          <div v-else class="w-full whitespace-pre-wrap" v-text="text" />
-          <span
+  <div class="flex flex-col group max-w-full" style="width: auto">
+    <div :class="wrapClass" class="w-full" style="width: auto">
+      <div ref="textRef" class="leading-relaxed break-words">
+        <div v-if="!inversion" class="flex flex-col items-start">
+          <div class="w-full">
+            <div
+              v-if="!asRawText"
+              class="w-full markdown-body"
+              :class="[{ 'markdown-body-generate': loading }]"
+              v-html="text"
+            />
+            <div v-else class="w-full whitespace-pre-wrap" v-text="text" />
+            <!-- <span
             v-if="loading"
-            class="dark:text-white w-[4px] h-[20px] block animate-blink"
-            style="display: none"
+            class="dark:text-white w-[4px] h-[10px] block animate-blink"
+          /> -->
+            <NImage
+              v-if="imageUrl && isImageUrl"
+              :src="imageUrl"
+              :preview-src="imageUrl"
+              alt="图片"
+              class="h-md rounded-md m-1"
+              :style="{ 'max-width': isMobile ? '100%' : '20vw' }"
+              style="margin-top: 0.5rem"
+            />
+          </div>
+          <!-- 小易改动：注册掉底部的内容 -->
+        </div>
+        <div v-else>
+          <div class="whitespace-pre-wrap" v-text="text" />
+          <NImage
+            :src="imageUrl"
+            :preview-src="imageUrl"
+            alt="图片"
+            class="h-md rounded-md m-1"
+            :style="{ 'max-width': isMobile ? '100%' : '20vw' }"
+            style="margin-top: 0.5rem"
+            v-if="imageUrl && isImageUrl"
           />
         </div>
-        <!-- 小易改动：注册掉底部的内容 -->
-        <!-- <div style="margin-top: 0.5rem"> -->
-        <!-- <NButton class="ml-2" text type="primary" @click="handleCopy">
-            <template #icon>
-              <NIcon :size="10" :component="Copy" />
-            </template>
-            <span class="text-xs">复制</span>
-          </NButton>
+      </div>
+    </div>
+    <div
+      class="flex opacity-0 transition-opacity duration-300 group-hover:opacity-100 text-gray-700"
+    >
+      <div v-if="!inversion">
+        <div class="mt-1 flex">
+          <button
+            class="flex ml-0 items-center text-gray-400 hover:text-gray-700 dark:text-gray-600 dark:hover:text-gray-400 mx-1"
+            text
+            type="primary"
+            @click="handleCopy"
+          >
+            <SvgIcon class="flex h-3 w-3 mx-1" icon="tabler:copy" />
+            <span class="flex text-xs">复制</span>
+          </button>
 
-          <span style="margin-left: 0.5rem" />
-          <NButton
-            class="ml-2"
+          <button
+            class="flex ml-0 items-center text-gray-400 hover:text-gray-700 dark:text-gray-600 dark:hover:text-gray-400 mx-1"
+            text
+            type="primary"
+            @click="handleRegenerate"
+          >
+            <SvgIcon class="flex h-3 w-3 mx-1" icon="clarity:refresh-line" />
+            <span class="flex text-xs">重新生成</span>
+          </button>
+
+          <button
+            class="flex ml-0 items-center text-gray-400 hover:text-gray-700 dark:text-gray-600 dark:hover:text-gray-400 mx-1"
+            text
+            type="primary"
+            @click="handleDelete"
+          >
+            <SvgIcon
+              class="flex h-3 w-3 mx-1"
+              icon="fluent:delete-48-regular"
+            />
+            <span class="flex text-xs">删除</span>
+          </button>
+
+          <button
+            class="flex ml-0 items-center text-gray-400 hover:text-gray-700 dark:text-gray-600 dark:hover:text-gray-400 mx-1"
             text
             type="primary"
             @click="asRawText = !asRawText"
           >
-            <template #icon>
-              <SvgIcon
-                class="text-xs"
-                :icon="asRawText ? 'ic:outline-code-off' : 'ic:outline-code'"
-              />
-            </template>
-            <span class="text-xs">{{
+            <SvgIcon
+              class="flex h-3 w-3 mx-1"
+              :icon="asRawText ? 'ic:outline-code-off' : 'ic:outline-code'"
+            />
+            <span class="flex text-xs">{{
               asRawText ? t('chat.preview') : t('chat.showRawText')
             }}</span>
-          </NButton> -->
-        <!-- 删除BUG -->
-        <!-- <span style="margin-left: 0.5rem" />
-          <NButton text type="primary" @click="handleDelete">
-            <template #icon>
-              <NIcon :size="10" :component="Delete" />
-            </template>
-            <span class="text-xs">删除</span>
-          </NButton> -->
+          </button>
 
-        <!-- <span style="margin-left: 0.5rem" />
-          <NButton text type="primary" @click="handleRegenerate">
-            <template #icon>
-              <NIcon :size="10" :component="Refresh" />
-            </template>
-            <span class="text-xs">重新回答</span>
-          </NButton> -->
-        <!-- </div> -->
+          <!-- <button
+            class="flex ml-0 items-center text-gray-400 hover:text-gray-700 dark:text-gray-600 dark:hover:text-gray-400 mx-1"
+            text
+            type="primary"
+            @click="hendleVideo"
+          >
+            <img src="@/assets/voice.gif" class="flex h-3 w-3 mx-1" />
+            <SvgIcon class="flex h-3 w-3 mx-1" icon="ep:video-play" />
+            <span class="flex text-xs">播放</span>
+          </button> -->
+        </div>
       </div>
-      <div v-else>
-        <div class="whitespace-pre-wrap" v-text="text" />
-        <a v-if="imageUrl && isImageUrl" :href="imageUrl" target="_blank">
-          <img
-            :src="imageUrl"
-            alt="图片"
-            class="h-auto rounded-md mb-1"
-            :class="{ 'max-w-full': isMobile, 'max-w-sm': !isMobile }"
-            style="margin-top: 0.5rem"
-          />
-        </a>
-        <a
-          :href="imageUrl"
-          target="_blank"
-          :class="{ 'file-2': isMobile, 'file-1': !isMobile }"
-        >
-          <img
-            src="@/assets/file.jpeg"
-            alt="文件"
-            class="h-auto rounded-md mb-1"
-            :class="{ 'file-2': isMobile, 'file-1': !isMobile }"
-            v-if="imageUrl && !isImageUrl"
-          />
-        </a>
-        <div v-if="false" style="margin-left: 0.5rem">
-          <NButton class="ml-2" text color="#FFF" @click="handleCopy">
-            <template #icon>
-              <NIcon :size="10" :component="Copy" />
-            </template>
 
-            <span class="text-xs">复制</span>
-          </NButton>
-          <span class="ml-3" />
-          <NButton text color="#FFF" @click="handleDelete">
-            <template #icon>
-              <NIcon :size="10" :component="Delete" />
-            </template>
-            <span class="text-xs">删除</span>
-          </NButton>
+      <div v-else>
+        <div class="mt-1 flex">
+          <button
+            class="flex ml-0 items-center text-gray-400 hover:text-gray-700 dark:text-gray-600 dark:hover:text-gray-400 mx-1"
+            text
+            type="primary"
+            @click="handleCopy"
+          >
+            <SvgIcon class="flex h-3 w-3 mx-1" icon="tabler:copy" />
+            <span class="flex text-xs">复制</span>
+          </button>
+          <button
+            class="flex ml-0 items-center text-gray-400 hover:text-gray-700 dark:text-gray-600 dark:hover:text-gray-400 mx-1"
+            text
+            type="primary"
+            @click="handleDelete"
+          >
+            <SvgIcon
+              class="flex h-3 w-3 mx-1"
+              icon="fluent:delete-48-regular"
+            />
+            <span class="flex text-xs">删除</span>
+          </button>
         </div>
       </div>
     </div>

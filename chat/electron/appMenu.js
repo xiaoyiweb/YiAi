@@ -5,11 +5,11 @@ const path = require('path')
 function configureAppMenu(mainWindow) {
 
   let	tray = new Tray(path.join(__dirname, '../icons/16x16.png'));
-  // tray.setToolTip('Nine Ai');
+  // tray.setToolTip('YiAi Ai');
 
   const template = [
     {
-      label: 'NineAi',
+      label: 'YiAi',
       submenu: [
         {
           label: '退出应用',

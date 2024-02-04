@@ -6,7 +6,7 @@ import { fetchChatDraw, fetchGetAllChatLogDraw, fetchGetChatLogDraw } from '@/ap
 import { useBasicLayout } from '@/hooks/useBasicLayout'
 import { TitleBar } from '@/components/base'
 import { useAppStore, useAuthStore } from '@/store'
-import GridManager from '@/components/common/GridManager/index.vue'
+import OldGridManager from '@/components/common/OldGridManager/index.vue'
 
 import Loading from '@/components/base/Loading.vue'
 const theme = computed(() => appStore.theme)
@@ -73,14 +73,14 @@ function updateEx() {
 }
 
 async function queryMyDrawList() {
-  const res: ResData = await fetchGetChatLogDraw({ model: 'DALL-E2' })
+  const res: ResData = await fetchGetChatLogDraw({ model: 'dall-e-3' })
   if (!res.success)
     return
 	mineDrawList.value = formatFileInfo(res.data)
 }
 
 async function queryAllDrawList() {
-  const res: ResData = await fetchGetAllChatLogDraw({ size: 999, rec: 1, model: 'DALL-E2' })
+  const res: ResData = await fetchGetAllChatLogDraw({ size: 999, rec: 1, model: 'dall-e-3' })
   if (!res.success)
     return ms.error(res.message)
   allDrawList.value = formatFileInfo(res.data.rows)
@@ -184,13 +184,13 @@ onMounted(() => {
           参数设置
         </h4>
         <div class="flex items-center mt-5">
-          <span class="mr-2 inline-block w-16 flex-shrink-0">图片尺寸:</span>
+          <span class="mr-2 inline-block w-20 flex-shrink-0">图片尺寸:</span>
           <div>
             <span v-for="item in imageSizeList" :key="item.value"  class="rounded ml-2 select-none cursor-pointer inline-block mb-2" :class="[item.value === form.size ? ['text-primary', 'bg-[#0d6efd1c]'] : ['bg-[#bfc4d033]'], isMobile ? 'px-1.5 py-0.5' : 'px-3 py-1']" @click="form.size = item.value">{{ item.label }}</span>
           </div>
         </div>
 				<div class="flex items-center mt-5">
-          <span class="mr-2 inline-block w-16 flex-shrink-0">图片质量:</span>
+          <span class="mr-2 inline-block w-20 flex-shrink-0">图片质量:</span>
           <div>
             <span v-for="item in qualityList" :key="item.value" class=" py-0.5 px-2.5 rounded ml-2 select-none cursor-pointer inline-block mb-2" :class="item.value === form.quality ? ['text-primary', 'bg-[#0d6efd1c]'] : ['bg-[#bfc4d033]']" @click="form.quality = item.value">{{ item.label }}</span>
           </div>
@@ -232,13 +232,13 @@ onMounted(() => {
       <NTabs type="line" animated class="mt-5" @update:value="updateTabs">
         <NTabPane name="all" tab="公共生成">
 					<div v-if="allDrawList.length" class="min-h-screen">
-						<GridManager @loadMore="loadMore" usePropmpt :gap="8" preOrigin  @usePropmptDraw="usePropmptDraw" :dataList="allDrawList" :scaleWidth="50" />
+						<OldGridManager @loadMore="loadMore" usePropmpt :gap="8" preOrigin  @usePropmptDraw="usePropmptDraw" :dataList="allDrawList" :scaleWidth="50" />
 					</div>
           <NEmpty v-else size="huge" class="mt-20" description="暂无数据哟~" />
         </NTabPane>
         <NTabPane name="mine" tab="我的生成">
 					<div v-if="mineDrawList.length" class="min-h-screen">
-						<GridManager @loadMore="loadMore" usePropmpt :gap="8" preOrigin @usePropmptDraw="usePropmptDraw" :dataList="mineDrawList" :scaleWidth="50" />
+						<OldGridManager @loadMore="loadMore" usePropmpt :gap="8" preOrigin @usePropmptDraw="usePropmptDraw" :dataList="mineDrawList" :scaleWidth="50" />
 					</div>
           <NEmpty v-else size="huge" class="mt-20" description="暂无数据哟~" />
         </NTabPane>

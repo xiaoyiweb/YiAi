@@ -1,20 +1,23 @@
 <route lang="yaml">
 meta:
   title: MJ绘画管理
-  </route>
+</route>
 
 <script lang="ts" setup>
-import { onMounted, reactive, ref } from 'vue'
-import type { FormInstance } from 'element-plus'
-import { ElMessage } from 'element-plus'
-import ApiChat from '@/api/modules/chat'
-import ApiUsre from '@/api/modules/user'
-import { DRAW_MJ_STATUS_LIST, RECOMMEND_STATUS_OPTIONS } from '@/constants/index'
+import { onMounted, reactive, ref } from 'vue';
+import type { FormInstance } from 'element-plus';
+import { ElMessage } from 'element-plus';
+import ApiChat from '@/api/modules/chat';
+import ApiUsre from '@/api/modules/user';
+import {
+  DRAW_MJ_STATUS_LIST,
+  RECOMMEND_STATUS_OPTIONS,
+} from '@/constants/index';
 
-const loading = ref(false)
-const formRef = ref<FormInstance>()
-const total = ref(0)
-const userList = ref([])
+const loading = ref(false);
+const formRef = ref<FormInstance>();
+const total = ref(0);
+const userList = ref([]);
 
 const formInline = reactive({
   userId: '',
@@ -22,60 +25,60 @@ const formInline = reactive({
   status: 3,
   page: 1,
   size: 10,
-})
+});
 
 interface Logitem {
-  id: number
-  userId: number
-  answer: string
-  thumbImg: string
-  rec: number
-  model: number
-  createdAt: string
-  updatedAt: string
+  id: number;
+  userId: number;
+  answer: string;
+  thumbImg: string;
+  rec: number;
+  model: number;
+  createdAt: string;
+  updatedAt: string;
+  drawUrl: string;
   fileInfo: {
-    width: number
-    height: number
-    thumbImg: string
-    cosUrl: string
-  }
+    width: number;
+    height: number;
+    thumbImg: string;
+    cosUrl: string;
+  };
 }
 
-const tableData = ref<Logitem[]>([])
+const tableData = ref<Logitem[]>([]);
 
 async function queryAllDrawLog() {
-  loading.value = true
+  loading.value = true;
   try {
-    const res = await ApiChat.queryMjDrawAll(formInline)
-    const { rows, count } = res.data
-    loading.value = false
+    const res = await ApiChat.queryMjDrawAll(formInline);
+    const { rows, count } = res.data;
+    loading.value = false;
 
-    total.value = count
-    tableData.value = rows
-  }
-  catch (error) {
-    loading.value = false
+    total.value = count;
+    tableData.value = rows;
+  } catch (error) {
+    loading.value = false;
   }
 }
 
 async function recommendDrawImg(id: number) {
-  const res = await ApiChat.recMjDrawImg({ id })
-  ElMessage.success(res.data)
-  queryAllDrawLog()
+  const res = await ApiChat.recMjDrawImg({ id });
+  ElMessage.success(res.data);
+  queryAllDrawLog();
 }
 
 async function handlerSearchUser(val: string) {
-  const res = await ApiUsre.queryAllUser({ size: 30, username: val })
-  userList.value = res.data.rows
+  const res = await ApiUsre.queryAllUser({ size: 30, username: val });
+  userList.value = res.data.rows;
 }
 
 function handlerReset(formEl: FormInstance | undefined) {
-  formEl?.resetFields()
-  queryAllDrawLog()
+  formEl?.resetFields();
+  queryAllDrawLog();
 }
 onMounted(() => {
-  queryAllDrawLog()
-})
+  queryAllDrawLog();
+});
 </script>
 
 <template>
@@ -102,37 +105,68 @@ onMounted(() => {
           </el-select>
         </el-form-item>
         <el-form-item label="推荐状态" prop="rec">
-          <el-select v-model="formInline.rec" placeholder="请选择推荐状态" clearable>
-            <el-option v-for="item in RECOMMEND_STATUS_OPTIONS" :key="item.value" :label="item.label" :value="item.value" />
+          <el-select
+            v-model="formInline.rec"
+            placeholder="请选择推荐状态"
+            clearable
+          >
+            <el-option
+              v-for="item in RECOMMEND_STATUS_OPTIONS"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            />
           </el-select>
         </el-form-item>
         <el-form-item label="绘制状态" prop="status">
-          <el-select v-model="formInline.status" placeholder="请选择图片绘制状态" clearable>
-            <el-option v-for="item in DRAW_MJ_STATUS_LIST" :key="item.value" :label="item.label" :value="item.value" />
+          <el-select
+            v-model="formInline.status"
+            placeholder="请选择图片绘制状态"
+            clearable
+          >
+            <el-option
+              v-for="item in DRAW_MJ_STATUS_LIST"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            />
           </el-select>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="queryAllDrawLog">
-            查询
-          </el-button>
-          <el-button @click="handlerReset(formRef)">
-            重置
-          </el-button>
+          <el-button type="primary" @click="queryAllDrawLog"> 查询 </el-button>
+          <el-button @click="handlerReset(formRef)"> 重置 </el-button>
         </el-form-item>
       </el-form>
     </page-main>
 
-    <page-main v-loading="loading" style="width: 100%;">
+    <page-main v-loading="loading" style="width: 100%">
       <div class="flex draw_container">
-        <div v-for="item in tableData" :key="item.id" style="height: 280px;" class="draw_img_container flex border">
+        <div
+          v-for="item in tableData"
+          :key="item.id"
+          style="height: 280px"
+          class="draw_img_container flex border"
+        >
           <div class="draw_head">
-            <el-image fit="contain" :preview-src-list="[item.fileInfo.cosUrl]" :src="item.fileInfo.thumbImg" lazy class="draw_img" hide-on-click-modal />
+            <el-image
+              fit="contain"
+              :preview-src-list="[item.drawUrl]"
+              :src="item.drawUrl"
+              lazy
+              class="draw_img"
+              hide-on-click-modal
+            />
           </div>
           <div class="draw_footer flex mt-3 justify-between items-center">
             <el-tag class="ml-2" :type="item.rec ? 'success' : 'info'">
               {{ item.rec ? '已推荐' : '未推荐' }}
             </el-tag>
-            <el-button type="warning" plain size="small" @click="recommendDrawImg(item.id)">
+            <el-button
+              type="warning"
+              plain
+              size="small"
+              @click="recommendDrawImg(item.id)"
+            >
               {{ item.rec ? '取消推荐' : '加入推荐' }}
               <el-icon v-if="!item.rec">
                 <Plus />
@@ -161,32 +195,32 @@ onMounted(() => {
   </div>
 </template>
 
-  <style lang="less">
-  .draw_container {
-    flex-wrap: wrap;
-    min-height: 400px;
+<style lang="less">
+.draw_container {
+  flex-wrap: wrap;
+  min-height: 400px;
+}
+
+.draw_img_container {
+  max-width: 18%;
+  flex-direction: column;
+  margin: 8px;
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  .draw_head {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+  }
+  .draw_img {
+    width: 100%;
   }
 
-  .draw_img_container {
-    max-width: 18%;
-    flex-direction: column;
-    margin: 8px;
-    box-sizing: border-box;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    .draw_head{
-      flex: 1;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      overflow: hidden;
-    }
-    .draw_img {
-      width: 100%;
-    }
-
-    .draw_footer {
-      height: 25px;
-    }
+  .draw_footer {
+    height: 25px;
   }
-  </style>
+}
+</style>

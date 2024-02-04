@@ -10,7 +10,8 @@ export function defaultState(): Chat.ChatState {
     groupList: [],
     chatList: [],
     groupKeyWord: '',
-		baseConfig: null
+		baseConfig: null,
+		chatPreList: [],
   }
 }
 

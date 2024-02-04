@@ -1,20 +1,66 @@
 {
-  "eslint.validate": ["html", "vue", "javascript", "jsx"],
-  "emmet.syntaxProfiles": {
-    "vue-html": "html",
-    "vue": "html"
-  },
-  "editor.tabSize": 2,
-  "eslint.alwaysShowStatus": true,
-  "eslint.quiet": true,
+  "prettier.enable": true,
+  "editor.formatOnSave": true,
   "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": true,
-    "source.fixAll": true,
-    "source.fixAll.stylelint": true
+    "source.fixAll.eslint": "explicit"
   },
-  "stylelint.customSyntax": "postcss-less",
-  "stylelint.validate": [
-    "css",
-    "less"
-  ]
+  "eslint.validate": [
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact",
+    "vue",
+    "html",
+    "json",
+    "jsonc",
+    "json5",
+    "yaml",
+    "yml",
+    "markdown"
+  ],
+  "cSpell.words": [
+    "antfu",
+    "axios",
+    "bumpp",
+    "chatgpt",
+    "chenzhaoyu",
+    "commitlint",
+    "davinci",
+    "dockerhub",
+    "esno",
+    "GPTAPI",
+    "highlightjs",
+    "hljs",
+    "iconify",
+    "katex",
+    "katexmath",
+    "linkify",
+    "logprobs",
+    "mdhljs",
+    "mila",
+    "MODELSMAPLIST",
+    "modelvalue",
+    "newconfig",
+    "nodata",
+    "OPENAI",
+    "pinia",
+    "Popconfirm",
+    "rushstack",
+    "Sider",
+    "tailwindcss",
+    "traptitech",
+    "tsup",
+    "Typecheck",
+    "unplugin",
+    "VITE",
+    "vueuse",
+    "Zhao"
+  ],
+  "vue.codeActions.enabled": false,
+  "volar.experimental.tsconfigPaths": {
+    "./chat": ["./chat/tsconfig.json"],
+    "./admin": ["./admin/tsconfig.json"],
+    "./service": ["./service/tsconfig.json"]
+    // 每个键是工作区的相对路径，值是一个数组，包含该路径下的 tsconfig.json 文件
+  }
 }

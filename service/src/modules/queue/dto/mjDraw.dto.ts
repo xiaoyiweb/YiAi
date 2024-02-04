@@ -20,9 +20,9 @@ export class MjDrawDto {
   @IsOptional()
   imgUrl?: string;
 
-  @ApiProperty({ example: 1, description: '绘画动作 绘图、放大、变换、图生图' })
+  @ApiProperty({ example: 'IMAGINE', description: '任务类型,可用值:IMAGINE,UPSCALE,VARIATION,ZOOM,PAN,DESCRIBE,BLEND,SHORTEN,SWAP_FACE' })
   @IsOptional()
-  action: number;
+  action: string;
 
   @ApiProperty({ example: 1, description: '变体或者放大的序号' })
   @IsOptional()
@@ -31,4 +31,8 @@ export class MjDrawDto {
   @ApiProperty({ example: 1, description: '绘画的DBID' })
   @IsOptional()
   drawId: number;
+
+  @ApiProperty({ example: 1, description: '任务ID' })
+  @IsOptional()
+  taskId: number;
 }
