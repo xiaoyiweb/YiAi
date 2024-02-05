@@ -4,8 +4,8 @@ body,
 	height: 100%;
 }
 
-*{
-  font-family: consolas, Menlo, "PingFang SC", "Microsoft YaHei", sans-serif;
+* {
+	font-family: consolas, Menlo, "PingFang SC", "Microsoft YaHei", sans-serif;
 }
 
 body {
@@ -13,51 +13,52 @@ body {
 	padding-bottom: env(safe-area-inset-bottom);
 }
 
-
-
+img {
+	transition: transform 0.3s;
+}
+img:hover {
+	transform: scale(1.1);
+}
 
 * :focus {
 	outline: none;
 }
 
-.tem{
+.tem {
 	// .n-slider .n-slider-rail{
 	// 	width: 4px !important;
 	// }
 
-	.n-slider-rail__fill{
+	.n-slider-rail__fill {
 		width: 4px;
 	}
 
-	.n-slider.n-slider--vertical .n-slider-rail .n-slider-rail__fill{
+	.n-slider.n-slider--vertical .n-slider-rail .n-slider-rail__fill {
 		left: -2px;
 	}
-
 }
 ::selection {
 	color: #fff;
 	background: #798aae;
-	}
+}
 
-
-.ele-drag{
+.ele-drag {
 	-webkit-app-region: drag;
 	// background-color: red;
 }
 
-
 // 自动移滚动条样式
-::-webkit-scrollbar{
-  width: 3px;
-  height: 3px;
+::-webkit-scrollbar {
+	width: 3px;
+	height: 3px;
 }
 // 滑块部分
-::-webkit-scrollbar-thumb{
-  border-radius: 1em;
-  background-color: rgba(50,50,50,.3);
+::-webkit-scrollbar-thumb {
+	border-radius: 1em;
+	background-color: rgba(50, 50, 50, 0.3);
 }
 // 辊道部分
-::-webkit-scrollbar-track{
-  border-radius: 1em;
-  background-color: rgba(50,50,50,.1);
+::-webkit-scrollbar-track {
+	border-radius: 1em;
+	background-color: rgba(50, 50, 50, 0.1);
 }

@@ -120,9 +120,9 @@ function handleSignIn() {
     class="sticky top-0 left-0 right-0 z-30 border-b dark:border-neutral-800 bg-white/80 dark:bg-black/20 backdrop-blur"
   >
     <div
-      class="relative flex items-center justify-center min-w-0 overflow-hidden h-14"
+      class="relative flex items-center justify-center min-w-0 overflow-hidden h-12"
     >
-      <div class="max-w-screen-4xl flex w-full h-full items-center px-4">
+      <div class="max-w-screen-4xl flex w-full h-full items-center px-2">
         <div v-if="isMobile" class="flex items-center">
           <button
             class="flex items-center justify-center w-11 h-11"
@@ -138,10 +138,13 @@ function handleSignIn() {
         </div>
 
         <!-- pc -->
-        <div class="flex justify-between items-center h-full w-full">
-          <div class="flex-1 flex ele-drag items-center h-full">
+        <div
+          class="flex justify-between items-center h-full w-full"
+          :class="[isMobile ? 'title-wrapper' : '']"
+        >
+          <div class="flex ele-drag items-center h-full over-hidden">
             <h1
-              class="flex-1 px-4 font-bold pr-6 overflow-hidden cursor-pointer select-none text-ellipsis whitespace-nowrap"
+              class="font-bold overflow-hidden cursor-pointer select-none text-ellipsis whitespace-nowrap px-2 pr-2"
               @dblclick="onScrollToTop"
             >
               {{ currentChatHistory?.title ?? '' }}
@@ -268,3 +271,13 @@ function handleSignIn() {
     </NPopover> -->
   </header>
 </template>
+
+<style scoped>
+.title-wrapper {
+  width: calc(100% - 44px);
+}
+.over-hidden {
+  width: 100%;
+  overflow: hidden;
+}
+</style>

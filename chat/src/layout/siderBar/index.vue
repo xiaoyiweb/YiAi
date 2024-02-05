@@ -180,7 +180,7 @@ watch(
 
 <template>
   <div
-    class="flex min-w-[80px] bg-[#e8eaf1] pb-2 dark:bg-[#25272d] dark:border-[#3a3a40] border-#efeff5-800"
+    class="flex min-w-[70px] bg-[#e8eaf1] pb-2 dark:bg-[#25272d] dark:border-[#3a3a40] border-#efeff5-800"
     :class="getMobileLayoutClass"
     :style="mobileSafeArea"
   >
@@ -199,7 +199,7 @@ watch(
             v-for="item in menuList"
             :key="item.menuName"
             class="flex justify-center flex-col items-center"
-            :class="isMobile ? 'mt-0' : 'mt-3'"
+            :class="isMobile ? 'mt-0' : 'mt-2'"
             @click="handleClickMenu(item)"
           >
             <NTooltip
@@ -209,7 +209,7 @@ watch(
             >
               <template #trigger>
                 <div
-                  class="h-12 w-12 cursor-pointer bg-white dark:bg-[#34373c] rounded-lg duration-300 flex justify-center items-center"
+                  class="h-10 w-10 cursor-pointer bg-white dark:bg-[#34373c] rounded-lg duration-300 flex justify-center items-center"
                   :class="[
                     isActive(item)
                       ? 'borderRadis shadow-[#3076fd] btns'

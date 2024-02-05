@@ -534,7 +534,7 @@ async function onConversation(msg?: string) {
               dataSources.value.length === 2 &&
               !activeGroupInfo?.value?.appId
             ) {
-              const lengthStr = isMobile.value ? 10 : 20
+              const lengthStr = isMobile.value ? 15 : 20
               const title =
                 dataSources.value[1].text.length > lengthStr
                   ? dataSources.value[1].text.slice(0, lengthStr)

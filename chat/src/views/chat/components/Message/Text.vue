@@ -307,7 +307,7 @@ defineExpose({ textRef })
 }
 
 .header-1 {
-  background-color: #f1f3f8 !important;
+  background-color: #fff !important;
   border-bottom: 1px solid #e3e8f7 !important;
   height: 30px !important;
   position: absolute !important;

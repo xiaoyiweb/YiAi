@@ -121,7 +121,7 @@ function handleRegenerate() {
       </p>
       <div
         class="flex items-end gap-1 mt-2"
-        :class="[inversion ? 'flex-row-reverse' : 'flex-row']"
+        :class="[inversion ? 'flex-row-reverse' : 'flex-row',inversion ? 'pl-5' : 'pr-5']"
       >
         <TextComponent
           ref="textRef"
