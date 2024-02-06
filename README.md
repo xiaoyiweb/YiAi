@@ -1,5 +1,6 @@
->本项目基于nineai 2.4.2开发，同时借鉴99AI[99AI整合版](https://github.com/vastxie/NineAIQuickDeploy)，由此二开。
+>本项目基于nineai 2.4.2 二次开发。
 >本项目仅供学习及参考，不可商用，由此造成的后果概不负责。
+>整合包位于 **YiAiQuickDeploy** 目录
 
 # Yi - Ai 更新日志
 
@@ -42,8 +43,6 @@
 5. **文件类型支持扩展**：
    - all 模型除 pdf 外，增加多种文件类型支持。
 
-6. **第三方中转推荐**：
-   - 推荐使用 [https://api.lightai.io](https://api.lightai.io) 作为第三方中转平台，以便于用户更方便地使用服务。
 
 ### Bug 修复
 
@@ -72,18 +71,27 @@
 <img src="https://nineai-1313051656.cos.ap-guangzhou.myqcloud.com/haibao/chat.png" width="100%">
 <img src="https://nineai-1313051656.cos.ap-guangzhou.myqcloud.com/haibao/dark.png" width="100%">
 
-# 项目部署教程
+# 项目部署教程（整合包）
+
+> YiAiQuickDeploy目录为整合包
+
 ## 环境准备
 
-1. **安装Node.js环境**
+1. **环境要求**
+   - Node.js 版本大于 16。
+   - pnpm 版本大于 6
+   - MySQL 版本大于等于 5.7
+   - Redis
+
+2. **安装Node.js环境**
    - 请根据您的操作系统下载并安装Node.js。
    - 可以从[Node.js官网](https://nodejs.org/)下载。
 
-2. **安装PM2**
+3. **安装PM2**
    - 使用npm安装PM2：`npm install pm2 -g`
    - PM2是一个带有负载均衡功能的Node应用的进程管理器。
 
-3. **安装PNPM**
+4. **安装PNPM**
    - 使用npm安装PNPM：`npm install -g pnpm`
    - PNPM是一个快速、节省磁盘空间的包管理工具。
 
@@ -108,7 +116,8 @@
 
 ## 管理平台
 
-- **管理端地址**：`/`
+- **chat端地址**：`/chat`
+- **管理端地址**：`/admin`
 - **普通管理员账号**：`admin`
 - **超级管理员账号**：`super`
 - **密码**：`123456`
@@ -116,6 +125,10 @@
 普通管理员，可以预览后台非敏感信息。登入后台后请及时修改管理员密码，或按需要禁用普通管理员。
 
 请确保遵循上述步骤进行配置和启动，以保证系统的正确运行。
+
+## 刷新404问题
+
+- 前端在刷新时可能会出现404问题，需要对 **Nginx** 进行配置。请参考相关文档进行配置。
 
 ## 项目升级
 
@@ -134,6 +147,14 @@
 4. **启动服务**
    - 使用命令：`pnpm start` 来启动项目，它将默认在 9520 端口监听。
 
-## 本项目二开作者wx
+# 项目部署教程（编译包）
+
+>基本步骤与整合包安装类似
+
+- 1.在**service**（后端服务）目录修改.env数据库信息，然后运行终端命令：pnpm install 安装依赖文件，再运行：pnpm dev 调试并导入数据库，最后使用终端命令：pnpm build 编译打包，最后就能得到与上面整合版一样的文件。
+
+- 2.**chat**(用户前端)和**admin**(管理员后端)仅需修改各种目录.env中的后端接口即可，然后分别在终端中执行pnpm install 安装依赖文件 和 pnpm build 编译打包，最后就能得到前端和后端的静态文件。
+
+# 本项目二开作者wx
 
 <img src="https://photo-1313051656.cos.ap-guangzhou.myqcloud.com/WechatIMG65.jpeg" width="300">

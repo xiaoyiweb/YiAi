@@ -78,9 +78,9 @@ const collapsed = computed(() => appStore.siderCollapsed)
 const groupKeyWord = ref('')
 
 function handleInputGroupSearch(event: { target: { value: any } }) {
-  const val = event.target.value;
-  groupKeyWord.value = val;
-  chatStore.setGroupKeyWord(val);
+  const val = event.target.value
+  groupKeyWord.value = val
+  chatStore.setGroupKeyWord(val)
 }
 
 function handleBlurInput() {
@@ -209,6 +209,13 @@ watch(
             >
               <SvgIcon icon="material-symbols-light:add" class="h-6 w-6" />
             </button>
+            <button
+              type="button"
+              class="rounded-md p-2 text-sm focus-visible:outline bg-white text-gray-400 dark:bg-gray-800"
+              @click="handleDelGroup"
+            >
+              <SvgIcon icon="material-symbols-light:delete-outline" class="h-6 w-6" />
+            </button>
           </div>
           <div class="flex-1 min-h-0 pb-4 overflow-hidden">
             <List />
@@ -313,7 +320,7 @@ watch(
                 <span class="mr-3">工作台</span>
               </NButton>
             </div>
-            <div class="flex justify-betweenx">
+            <!-- <div class="flex justify-betweenx">
               <NButton
                 type="tertiary"
                 size="small"
@@ -326,7 +333,7 @@ watch(
                 />
                 <span class="mr-3">清空全部非置顶会话</span>
               </NButton>
-            </div>
+            </div> -->
             <!-- <NButton block @click="show = true">
             {{ $t('store.siderButton') }}
           </NButton> -->

@@ -147,7 +147,7 @@ function handleValidate(e: MouseEvent) {
           </NFormItem>
 
           <div class="flex justify-between">
-            <span class="text-[#95AAC9]">更新密码完成后将重新登录！</span>
+            <span class="text-[#95AAC9]">更新密码后将重新登录！</span>
             <NButton
               :disabled="model.oldPassword === null"
               type="primary"
@@ -161,7 +161,7 @@ function handleValidate(e: MouseEvent) {
       <NGridItem class="border rounded-sm p-3  bg-[#f8f9fa] h-48 dark:bg-[#18181c]  dark:border-[#ffffff17]">
         <b class="text-base ">密码要求</b>
         <p class="text-[#95AAC9] mt-3">
-          要创建一个新的密码，你必须满足以下所有要求。
+          新的密码必须满足以下所有要求。
         </p>
         <div class="ml-3 text-[#95AAC9] mt-2">
           最少6个字符

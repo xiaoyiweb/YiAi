@@ -32,8 +32,7 @@ const { isSmallLg } = useBasicLayout()
 const theme = computed(() => appStore.theme)
 
 const html = computed(() => {
-  if (!notice.value.noticeInfo)
-    return ''
+  if (!notice.value.noticeInfo) return ''
   return marked(notice.value.noticeInfo)
 })
 
@@ -48,8 +47,7 @@ function handleClose() {
 async function queryNotice() {
   const res: ResData = await fetchGetGlobalNoticeAPI()
   const { success, data } = res
-  if (success)
-    notice.value = data
+  if (success) notice.value = data
 }
 
 async function openDrawerAfter() {
@@ -64,27 +62,39 @@ function handleReminder() {
 </script>
 
 <template>
-  <NModal :show="visible" class="p-0 noticeDialog" :style="{ maxWidth: '780px', minWidth: isSmallLg ? '100%' : '780px' }" :on-after-enter="openDrawerAfter" :on-after-leave="handleCloseDialog">
+  <NModal
+    :show="visible"
+    class="p-0 noticeDialog"
+    :style="{ maxWidth: '780px', minWidth: isSmallLg ? '100%' : '780px' }"
+    :on-after-enter="openDrawerAfter"
+    :on-after-leave="handleCloseDialog"
+  >
     <NSpace vertical>
       <NCard closable @close="handleClose">
         <template #header>
-					<div v-if="loading"   class="px-[20px]" >
-						<NSkeleton text width="30%" />
-					</div>
+          <div v-if="loading" class="px-[20px]">
+            <NSkeleton text width="30%" />
+          </div>
           <template v-else>
             <span class="text-xl">{{ notice.noticeTitle }}</span>
           </template>
         </template>
-				<div v-if="loading"   class="px-[20px]" >
-						<NSkeleton  text :repeat="10" />
-				</div>
+        <div v-if="loading" class="px-[20px]">
+          <NSkeleton text :repeat="10" />
+        </div>
         <template v-else>
-          <div :class="[darkMode ? 'text-[#fff]' : 'text-[#000]', 'pb-5']" :style="{ background: theme === 'dark' ? '#2c2c32' : '#fff' }" class="p-[20px] markdown-body markdown-body-generate max-h-[500px] overflow-y-auto overflow-x-hidden" v-html="html" />
+          <div
+            :class="[darkMode ? 'text-[#fff]' : 'text-[#000]', 'pb-5']"
+            :style="{ background: theme === 'dark' ? '#2c2c32' : '#fff' }"
+            class="p-[20px] markdown-body markdown-body-generate max-h-[500px] overflow-y-auto overflow-x-hidden"
+            v-html="html"
+          />
         </template>
         <div class="flex justify-end py-3 px-5">
-          <NButton type="primary"  @click="handleReminder">
-            24小时不再提示
+          <NButton type="text" @click="handleReminder">
+            今日不再提示
           </NButton>
+          <NButton type="primary" @click="useGlobalStore.updateNoticeDialog(false)"> 我已知晓 </NButton>
         </div>
       </NCard>
     </NSpace>
@@ -92,7 +102,7 @@ function handleReminder() {
 </template>
 
 <style scoped>
- /deep/ .n-card__content{
-	padding: 0 !important;
+/deep/ .n-card__content {
+  padding: 0 !important;
 }
 </style>

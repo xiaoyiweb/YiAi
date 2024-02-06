@@ -209,7 +209,7 @@ watch(
             >
               <template #trigger>
                 <div
-                  class="h-10 w-10 cursor-pointer bg-white dark:bg-[#34373c] rounded-lg duration-300 flex justify-center items-center"
+                  class="h-10 w-10 cursor-pointer bg-white dark:bg-[#34373c] rounded-lg duration-300 flex justify-center items-center btnhover"
                   :class="[
                     isActive(item)
                       ? 'borderRadis shadow-[#3076fd] btns'
@@ -335,6 +335,11 @@ watch(
 
 .btns {
   box-shadow: 0 5px 16px #0636e6;
+}
+.btnhover:hover{
+    box-shadow: 0 5px 16px #0636e6;
+    transform: scale(1.1);
+    color: #0636e6;
 }
 
 .borderRadis {

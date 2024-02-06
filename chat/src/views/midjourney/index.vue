@@ -562,7 +562,7 @@ onMounted(() => {
               />
             </span>
           </div>
-          <div class="block text-sm mt-2 flex items-center">
+          <!-- <div class="block text-sm mt-2 flex items-center">
             参数
             <NTooltip placement="right-end" trigger="hover">
               <template #trigger>
@@ -572,7 +572,7 @@ onMounted(() => {
                 <p>合理使用参数绘制更为理想的结果！</p>
               </div>
             </NTooltip>
-          </div>
+          </div> -->
           <div class="mt-3 flex justify-between items-center space-x-2 text-xs">
             <span class="w-[65px] block text-sm">品质</span>
             <span class="flex-1">
@@ -629,7 +629,7 @@ onMounted(() => {
             </NTooltip>
           </div>
 
-          <div class="block text-sm mt-2 flex items-center">设定</div>
+          <!-- <div class="block text-sm mt-2 flex items-center">设定</div> -->
           <div class="mt-3 flex justify-between items-center space-x-2 text-xs">
             <span class="w-[65px] block text-sm">携带参数</span>
             <span class="flex-1">

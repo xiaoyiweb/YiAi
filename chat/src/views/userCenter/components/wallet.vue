@@ -150,18 +150,18 @@ onMounted(() => {
           <div class="text-[#95aac9] mb-2 text-base">
             基础模型余额
           </div>
-          <b class="text-3xl text-[#555]">{{ userBalance.sumModel3Count ?? 0 }}</b> <span class="ml-4 text-[#989898]">每次对话根据模型消费不同积分！</span>
+          <b class="text-3xl text-[#555]">{{ userBalance.sumModel3Count ?? 0 }}</b> <span class="ml-4 text-[#989898]">不同模型消费不同积分！</span>
         </NGridItem>
         <NGridItem class="border dark:border-[#ffffff17] rounded-sm p-3">
           <div class="text-[#95aac9] mb-2 text-base">
             高级模型余额
           </div>
-          <b class="text-3xl text-[#555]">{{ userBalance.sumModel4Count ?? 0 }}</b> <span class="ml-4 text-[#989898]">每次对话根据模型消费不同积分！</span>
+          <b class="text-3xl text-[#555]">{{ userBalance.sumModel4Count ?? 0 }}</b> <span class="ml-4 text-[#989898]">不同模型消费不同积分！</span>
         </NGridItem><NGridItem class="border dark:border-[#ffffff17] rounded-sm p-3">
           <div class="text-[#95aac9] mb-2 text-base">
             MJ绘画余额
           </div>
-          <b class="text-3xl text-[#555]">{{ userBalance.sumDrawMjCount ?? 0 }}</b> <span class="ml-4 text-[#989898]">根据画图动作消耗不同的积分！</span>
+          <b class="text-3xl text-[#555]">{{ userBalance.sumDrawMjCount ?? 0 }}</b> <span class="ml-4 text-[#989898]">不同画图消耗不同积分！</span>
         </NGridItem><NGridItem class="border dark:border-[#ffffff17] rounded-sm p-3">
           <div class="text-[#95aac9] mb-2 text-base">
             卡密充值
