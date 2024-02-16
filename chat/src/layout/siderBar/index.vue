@@ -203,7 +203,7 @@ watch(
             @click="handleClickMenu(item)"
           >
             <NTooltip
-              v-if="!isMobile && signInStatus"
+              v-if="!isMobile"
               trigger="hover"
               placement="right"
             >
