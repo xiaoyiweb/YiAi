@@ -157,4 +157,6 @@
 
 # 本项目二开作者wx
 
+**不提供无偿服务，提供有偿技术指导、部署等服务，加我/合作注明来意，否则不通过**
+
 <img src="https://photo-1313051656.cos.ap-guangzhou.myqcloud.com/WechatIMG65.jpeg" width="300">
