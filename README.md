@@ -163,5 +163,6 @@
 **开发维护不易，同时也欢迎您的赞助！**
 > 请使用支付宝支付
 <img src="https://nineai-1313051656.cos.ap-guangzhou.myqcloud.com/WechatIMG244.jpeg" width="300">
-> 扫码添加微信
+
+> 请扫码添加微信
 <img src="https://photo-1313051656.cos.ap-guangzhou.myqcloud.com/WechatIMG65.jpeg" width="300">
