@@ -18649,13 +18649,13 @@ packages:
     dev: false
 
   registry.nlark.com/ee-first@1.1.1:
-    resolution: {integrity: sha1-WQxhFWsK4vTwJVcyoViyZrxWsh0=, registry: http://registry.npmjs.org/, tarball: http://registry.nlark.com/ee-first/download/ee-first-1.1.1.tgz}
+    resolution: {integrity: sha1-WQxhFWsK4vTwJVcyoViyZrxWsh0=, registry: http://registry.npmjs.org/, tarball: http://registry.npmmirror.com/ee-first/download/ee-first-1.1.1.tgz}
     name: ee-first
     version: 1.1.1
     dev: true
 
   registry.nlark.com/setprototypeof@1.2.0:
-    resolution: {integrity: sha1-ZsmiSnP5/CjL5msJ/tPTPcrxtCQ=, registry: http://registry.npmjs.org/, tarball: http://registry.nlark.com/setprototypeof/download/setprototypeof-1.2.0.tgz}
+    resolution: {integrity: sha1-ZsmiSnP5/CjL5msJ/tPTPcrxtCQ=, registry: http://registry.npmjs.org/, tarball: http://registry.npmmirror.com/setprototypeof/download/setprototypeof-1.2.0.tgz}
     name: setprototypeof
     version: 1.2.0
 

@@ -134,7 +134,7 @@ packages:
     resolution: {integrity: sha1-2Klr13/Wjfd5OnMDajug1UBdR3s=, tarball: concat-map/download/concat-map-0.0.1.tgz}
 
   registry.nlark.com/@nodelib/fs.scandir/2.1.5:
-    resolution: {integrity: sha1-dhnC6yGyVIP20WdUi0z9WnSIw9U=, registry: http://registry.npm.taobao.org/, tarball: http://registry.nlark.com/@nodelib/fs.scandir/download/@nodelib/fs.scandir-2.1.5.tgz?cache=0&sync_timestamp=1622796717993&other_urls=https%3A%2F%2Fregistry.nlark.com%2F%40nodelib%2Ffs.scandir%2Fdownload%2F%40nodelib%2Ffs.scandir-2.1.5.tgz}
+    resolution: {integrity: sha1-dhnC6yGyVIP20WdUi0z9WnSIw9U=, registry: http://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@nodelib/fs.scandir/download/@nodelib/fs.scandir-2.1.5.tgz?cache=0&sync_timestamp=1622796717993&other_urls=https%3A%2F%2Fregistry.nlark.com%2F%40nodelib%2Ffs.scandir%2Fdownload%2F%40nodelib%2Ffs.scandir-2.1.5.tgz}
     name: '@nodelib/fs.scandir'
     version: 2.1.5
     engines: {node: '>= 8'}
@@ -144,7 +144,7 @@ packages:
     dev: true
 
   registry.nlark.com/@webassemblyjs/ast/1.11.1:
-    resolution: {integrity: sha1-K/12fq4aaZb0Mv9+jX/HVnnAtqc=, registry: http://registry.npm.taobao.org/, tarball: http://registry.nlark.com/@webassemblyjs/ast/download/@webassemblyjs/ast-1.11.1.tgz?cache=0&sync_timestamp=1625477735274&other_urls=https%3A%2F%2Fregistry.nlark.com%2F%40webassemblyjs%2Fast%2Fdownload%2F%40webassemblyjs%2Fast-1.11.1.tgz}
+    resolution: {integrity: sha1-K/12fq4aaZb0Mv9+jX/HVnnAtqc=, registry: http://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@webassemblyjs/ast/download/@webassemblyjs/ast-1.11.1.tgz?cache=0&sync_timestamp=1625477735274&other_urls=https%3A%2F%2Fregistry.nlark.com%2F%40webassemblyjs%2Fast%2Fdownload%2F%40webassemblyjs%2Fast-1.11.1.tgz}
     name: '@webassemblyjs/ast'
     version: 1.11.1
     dependencies:
@@ -153,31 +153,31 @@ packages:
     dev: true
 
   registry.nlark.com/@webassemblyjs/floating-point-hex-parser/1.11.1:
-    resolution: {integrity: sha1-9sYacF8P16auyqToGY8j2dwXnk8=, registry: http://registry.npm.taobao.org/, tarball: http://registry.nlark.com/@webassemblyjs/floating-point-hex-parser/download/@webassemblyjs/floating-point-hex-parser-1.11.1.tgz?cache=0&sync_timestamp=1625477732294&other_urls=https%3A%2F%2Fregistry.nlark.com%2F%40webassemblyjs%2Ffloating-point-hex-parser%2Fdownload%2F%40webassemblyjs%2Ffloating-point-hex-parser-1.11.1.tgz}
+    resolution: {integrity: sha1-9sYacF8P16auyqToGY8j2dwXnk8=, registry: http://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@webassemblyjs/floating-point-hex-parser/download/@webassemblyjs/floating-point-hex-parser-1.11.1.tgz?cache=0&sync_timestamp=1625477732294&other_urls=https%3A%2F%2Fregistry.nlark.com%2F%40webassemblyjs%2Ffloating-point-hex-parser%2Fdownload%2F%40webassemblyjs%2Ffloating-point-hex-parser-1.11.1.tgz}
     name: '@webassemblyjs/floating-point-hex-parser'
     version: 1.11.1
     dev: true
 
   registry.nlark.com/@webassemblyjs/helper-api-error/1.11.1:
-    resolution: {integrity: sha1-GmMZLYeI5cASgAump6RscFKI/RY=, registry: http://registry.npm.taobao.org/, tarball: http://registry.nlark.com/@webassemblyjs/helper-api-error/download/@webassemblyjs/helper-api-error-1.11.1.tgz?cache=0&sync_timestamp=1625477730523&other_urls=https%3A%2F%2Fregistry.nlark.com%2F%40webassemblyjs%2Fhelper-api-error%2Fdownload%2F%40webassemblyjs%2Fhelper-api-error-1.11.1.tgz}
+    resolution: {integrity: sha1-GmMZLYeI5cASgAump6RscFKI/RY=, registry: http://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@webassemblyjs/helper-api-error/download/@webassemblyjs/helper-api-error-1.11.1.tgz?cache=0&sync_timestamp=1625477730523&other_urls=https%3A%2F%2Fregistry.nlark.com%2F%40webassemblyjs%2Fhelper-api-error%2Fdownload%2F%40webassemblyjs%2Fhelper-api-error-1.11.1.tgz}
     name: '@webassemblyjs/helper-api-error'
     version: 1.11.1
     dev: true
 
   registry.nlark.com/@webassemblyjs/helper-buffer/1.11.1:
-    resolution: {integrity: sha1-gyqQDrREiEzemnytRn+BUA9eWrU=, registry: http://registry.npm.taobao.org/, tarball: http://registry.nlark.com/@webassemblyjs/helper-buffer/download/@webassemblyjs/helper-buffer-1.11.1.tgz?cache=0&sync_timestamp=1625477731401&other_urls=https%3A%2F%2Fregistry.nlark.com%2F%40webassemblyjs%2Fhelper-buffer%2Fdownload%2F%40webassemblyjs%2Fhelper-buffer-1.11.1.tgz}
+    resolution: {integrity: sha1-gyqQDrREiEzemnytRn+BUA9eWrU=, registry: http://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@webassemblyjs/helper-buffer/download/@webassemblyjs/helper-buffer-1.11.1.tgz?cache=0&sync_timestamp=1625477731401&other_urls=https%3A%2F%2Fregistry.nlark.com%2F%40webassemblyjs%2Fhelper-buffer%2Fdownload%2F%40webassemblyjs%2Fhelper-buffer-1.11.1.tgz}
     name: '@webassemblyjs/helper-buffer'
     version: 1.11.1
     dev: true
 
   registry.nlark.com/@webassemblyjs/helper-wasm-bytecode/1.11.1:
-    resolution: {integrity: sha1-8ygkHkHnsZnQsgwY6IQpxEMyleE=, registry: http://registry.npm.taobao.org/, tarball: http://registry.nlark.com/@webassemblyjs/helper-wasm-bytecode/download/@webassemblyjs/helper-wasm-bytecode-1.11.1.tgz?cache=0&sync_timestamp=1625477731700&other_urls=https%3A%2F%2Fregistry.nlark.com%2F%40webassemblyjs%2Fhelper-wasm-bytecode%2Fdownload%2F%40webassemblyjs%2Fhelper-wasm-bytecode-1.11.1.tgz}
+    resolution: {integrity: sha1-8ygkHkHnsZnQsgwY6IQpxEMyleE=, registry: http://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@webassemblyjs/helper-wasm-bytecode/download/@webassemblyjs/helper-wasm-bytecode-1.11.1.tgz?cache=0&sync_timestamp=1625477731700&other_urls=https%3A%2F%2Fregistry.nlark.com%2F%40webassemblyjs%2Fhelper-wasm-bytecode%2Fdownload%2F%40webassemblyjs%2Fhelper-wasm-bytecode-1.11.1.tgz}
     name: '@webassemblyjs/helper-wasm-bytecode'
     version: 1.11.1
     dev: true
 
   registry.nlark.com/@webassemblyjs/helper-wasm-section/1.11.1:
-    resolution: {integrity: sha1-Ie4GWntjXzGec48N1zv72igcCXo=, registry: http://registry.npm.taobao.org/, tarball: http://registry.nlark.com/@webassemblyjs/helper-wasm-section/download/@webassemblyjs/helper-wasm-section-1.11.1.tgz?cache=0&sync_timestamp=1625477735607&other_urls=https%3A%2F%2Fregistry.nlark.com%2F%40webassemblyjs%2Fhelper-wasm-section%2Fdownload%2F%40webassemblyjs%2Fhelper-wasm-section-1.11.1.tgz}
+    resolution: {integrity: sha1-Ie4GWntjXzGec48N1zv72igcCXo=, registry: http://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@webassemblyjs/helper-wasm-section/download/@webassemblyjs/helper-wasm-section-1.11.1.tgz?cache=0&sync_timestamp=1625477735607&other_urls=https%3A%2F%2Fregistry.nlark.com%2F%40webassemblyjs%2Fhelper-wasm-section%2Fdownload%2F%40webassemblyjs%2Fhelper-wasm-section-1.11.1.tgz}
     name: '@webassemblyjs/helper-wasm-section'
     version: 1.11.1
     dependencies:
@@ -188,7 +188,7 @@ packages:
     dev: true
 
   registry.nlark.com/@webassemblyjs/ieee754/1.11.1:
-    resolution: {integrity: sha1-ljkp6bvQVwnn4SJDoJkYCBKZJhQ=, registry: http://registry.npm.taobao.org/, tarball: http://registry.nlark.com/@webassemblyjs/ieee754/download/@webassemblyjs/ieee754-1.11.1.tgz?cache=0&sync_timestamp=1625477730793&other_urls=https%3A%2F%2Fregistry.nlark.com%2F%40webassemblyjs%2Fieee754%2Fdownload%2F%40webassemblyjs%2Fieee754-1.11.1.tgz}
+    resolution: {integrity: sha1-ljkp6bvQVwnn4SJDoJkYCBKZJhQ=, registry: http://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@webassemblyjs/ieee754/download/@webassemblyjs/ieee754-1.11.1.tgz?cache=0&sync_timestamp=1625477730793&other_urls=https%3A%2F%2Fregistry.nlark.com%2F%40webassemblyjs%2Fieee754%2Fdownload%2F%40webassemblyjs%2Fieee754-1.11.1.tgz}
     name: '@webassemblyjs/ieee754'
     version: 1.11.1
     dependencies:
@@ -196,7 +196,7 @@ packages:
     dev: true
 
   registry.nlark.com/@webassemblyjs/leb128/1.11.1:
-    resolution: {integrity: sha1-zoFLRVdOk9drrh+yZEq5zdlSeqU=, registry: http://registry.npm.taobao.org/, tarball: http://registry.nlark.com/@webassemblyjs/leb128/download/@webassemblyjs/leb128-1.11.1.tgz?cache=0&sync_timestamp=1625477732636&other_urls=https%3A%2F%2Fregistry.nlark.com%2F%40webassemblyjs%2Fleb128%2Fdownload%2F%40webassemblyjs%2Fleb128-1.11.1.tgz}
+    resolution: {integrity: sha1-zoFLRVdOk9drrh+yZEq5zdlSeqU=, registry: http://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@webassemblyjs/leb128/download/@webassemblyjs/leb128-1.11.1.tgz?cache=0&sync_timestamp=1625477732636&other_urls=https%3A%2F%2Fregistry.nlark.com%2F%40webassemblyjs%2Fleb128%2Fdownload%2F%40webassemblyjs%2Fleb128-1.11.1.tgz}
     name: '@webassemblyjs/leb128'
     version: 1.11.1
     dependencies:
@@ -204,13 +204,13 @@ packages:
     dev: true
 
   registry.nlark.com/@webassemblyjs/utf8/1.11.1:
-    resolution: {integrity: sha1-0fi3ZDaefG5rrjUOhU3smlnwo/8=, registry: http://registry.npm.taobao.org/, tarball: http://registry.nlark.com/@webassemblyjs/utf8/download/@webassemblyjs/utf8-1.11.1.tgz?cache=0&sync_timestamp=1625477731072&other_urls=https%3A%2F%2Fregistry.nlark.com%2F%40webassemblyjs%2Futf8%2Fdownload%2F%40webassemblyjs%2Futf8-1.11.1.tgz}
+    resolution: {integrity: sha1-0fi3ZDaefG5rrjUOhU3smlnwo/8=, registry: http://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@webassemblyjs/utf8/download/@webassemblyjs/utf8-1.11.1.tgz?cache=0&sync_timestamp=1625477731072&other_urls=https%3A%2F%2Fregistry.nlark.com%2F%40webassemblyjs%2Futf8%2Fdownload%2F%40webassemblyjs%2Futf8-1.11.1.tgz}
     name: '@webassemblyjs/utf8'
     version: 1.11.1
     dev: true
 
   registry.nlark.com/@webassemblyjs/wasm-edit/1.11.1:
-    resolution: {integrity: sha1-rSBuv0v5WgWM6YgKjAksXeyBk9Y=, registry: http://registry.npm.taobao.org/, tarball: http://registry.nlark.com/@webassemblyjs/wasm-edit/download/@webassemblyjs/wasm-edit-1.11.1.tgz?cache=0&sync_timestamp=1625477739053&other_urls=https%3A%2F%2Fregistry.nlark.com%2F%40webassemblyjs%2Fwasm-edit%2Fdownload%2F%40webassemblyjs%2Fwasm-edit-1.11.1.tgz}
+    resolution: {integrity: sha1-rSBuv0v5WgWM6YgKjAksXeyBk9Y=, registry: http://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@webassemblyjs/wasm-edit/download/@webassemblyjs/wasm-edit-1.11.1.tgz?cache=0&sync_timestamp=1625477739053&other_urls=https%3A%2F%2Fregistry.nlark.com%2F%40webassemblyjs%2Fwasm-edit%2Fdownload%2F%40webassemblyjs%2Fwasm-edit-1.11.1.tgz}
     name: '@webassemblyjs/wasm-edit'
     version: 1.11.1
     dependencies:
@@ -225,7 +225,7 @@ packages:
     dev: true
 
   registry.nlark.com/@webassemblyjs/wasm-gen/1.11.1:
-    resolution: {integrity: sha1-hsXqMEhJdZt9iMR6MvTwOa48j3Y=, registry: http://registry.npm.taobao.org/, tarball: http://registry.nlark.com/@webassemblyjs/wasm-gen/download/@webassemblyjs/wasm-gen-1.11.1.tgz?cache=0&sync_timestamp=1625477733962&other_urls=https%3A%2F%2Fregistry.nlark.com%2F%40webassemblyjs%2Fwasm-gen%2Fdownload%2F%40webassemblyjs%2Fwasm-gen-1.11.1.tgz}
+    resolution: {integrity: sha1-hsXqMEhJdZt9iMR6MvTwOa48j3Y=, registry: http://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@webassemblyjs/wasm-gen/download/@webassemblyjs/wasm-gen-1.11.1.tgz?cache=0&sync_timestamp=1625477733962&other_urls=https%3A%2F%2Fregistry.nlark.com%2F%40webassemblyjs%2Fwasm-gen%2Fdownload%2F%40webassemblyjs%2Fwasm-gen-1.11.1.tgz}
     name: '@webassemblyjs/wasm-gen'
     version: 1.11.1
     dependencies:
@@ -237,7 +237,7 @@ packages:
     dev: true
 
   registry.nlark.com/@webassemblyjs/wasm-opt/1.11.1:
-    resolution: {integrity: sha1-ZXtMIgL0zzs0X4pMZGHIwkGJhfI=, registry: http://registry.npm.taobao.org/, tarball: http://registry.nlark.com/@webassemblyjs/wasm-opt/download/@webassemblyjs/wasm-opt-1.11.1.tgz?cache=0&sync_timestamp=1625477737542&other_urls=https%3A%2F%2Fregistry.nlark.com%2F%40webassemblyjs%2Fwasm-opt%2Fdownload%2F%40webassemblyjs%2Fwasm-opt-1.11.1.tgz}
+    resolution: {integrity: sha1-ZXtMIgL0zzs0X4pMZGHIwkGJhfI=, registry: http://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@webassemblyjs/wasm-opt/download/@webassemblyjs/wasm-opt-1.11.1.tgz?cache=0&sync_timestamp=1625477737542&other_urls=https%3A%2F%2Fregistry.nlark.com%2F%40webassemblyjs%2Fwasm-opt%2Fdownload%2F%40webassemblyjs%2Fwasm-opt-1.11.1.tgz}
     name: '@webassemblyjs/wasm-opt'
     version: 1.11.1
     dependencies:
@@ -248,7 +248,7 @@ packages:
     dev: true
 
   registry.nlark.com/@webassemblyjs/wasm-parser/1.11.1:
-    resolution: {integrity: sha1-hspzRTT0F+m9PGfHocddi+QfsZk=, registry: http://registry.npm.taobao.org/, tarball: http://registry.nlark.com/@webassemblyjs/wasm-parser/download/@webassemblyjs/wasm-parser-1.11.1.tgz?cache=0&sync_timestamp=1625477733604&other_urls=https%3A%2F%2Fregistry.nlark.com%2F%40webassemblyjs%2Fwasm-parser%2Fdownload%2F%40webassemblyjs%2Fwasm-parser-1.11.1.tgz}
+    resolution: {integrity: sha1-hspzRTT0F+m9PGfHocddi+QfsZk=, registry: http://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@webassemblyjs/wasm-parser/download/@webassemblyjs/wasm-parser-1.11.1.tgz?cache=0&sync_timestamp=1625477733604&other_urls=https%3A%2F%2Fregistry.nlark.com%2F%40webassemblyjs%2Fwasm-parser%2Fdownload%2F%40webassemblyjs%2Fwasm-parser-1.11.1.tgz}
     name: '@webassemblyjs/wasm-parser'
     version: 1.11.1
     dependencies:
@@ -261,7 +261,7 @@ packages:
     dev: true
 
   registry.nlark.com/@webassemblyjs/wast-printer/1.11.1:
-    resolution: {integrity: sha1-0Mc77ajuxUJvEK6O9VzuXnCEwvA=, registry: http://registry.npm.taobao.org/, tarball: http://registry.nlark.com/@webassemblyjs/wast-printer/download/@webassemblyjs/wast-printer-1.11.1.tgz?cache=0&sync_timestamp=1625477734920&other_urls=https%3A%2F%2Fregistry.nlark.com%2F%40webassemblyjs%2Fwast-printer%2Fdownload%2F%40webassemblyjs%2Fwast-printer-1.11.1.tgz}
+    resolution: {integrity: sha1-0Mc77ajuxUJvEK6O9VzuXnCEwvA=, registry: http://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@webassemblyjs/wast-printer/download/@webassemblyjs/wast-printer-1.11.1.tgz?cache=0&sync_timestamp=1625477734920&other_urls=https%3A%2F%2Fregistry.nlark.com%2F%40webassemblyjs%2Fwast-printer%2Fdownload%2F%40webassemblyjs%2Fwast-printer-1.11.1.tgz}
     name: '@webassemblyjs/wast-printer'
     version: 1.11.1
     dependencies:
@@ -270,12 +270,12 @@ packages:
     dev: true
 
   registry.nlark.com/ee-first/1.1.1:
-    resolution: {integrity: sha1-WQxhFWsK4vTwJVcyoViyZrxWsh0=, registry: http://registry.npm.taobao.org/, tarball: http://registry.nlark.com/ee-first/download/ee-first-1.1.1.tgz}
+    resolution: {integrity: sha1-WQxhFWsK4vTwJVcyoViyZrxWsh0=, registry: http://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/ee-first/download/ee-first-1.1.1.tgz}
     name: ee-first
     version: 1.1.1
 
   registry.nlark.com/setprototypeof/1.2.0:
-    resolution: {integrity: sha1-ZsmiSnP5/CjL5msJ/tPTPcrxtCQ=, registry: http://registry.npm.taobao.org/, tarball: http://registry.nlark.com/setprototypeof/download/setprototypeof-1.2.0.tgz}
+    resolution: {integrity: sha1-ZsmiSnP5/CjL5msJ/tPTPcrxtCQ=, registry: http://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/setprototypeof/download/setprototypeof-1.2.0.tgz}
     name: setprototypeof
     version: 1.2.0
 
