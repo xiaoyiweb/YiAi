@@ -1,6 +1,14 @@
 <script setup lang='ts'>
 import type { Ref } from 'vue'
-import { computed, nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
+import {
+  computed,
+  nextTick,
+  onMounted,
+  onUnmounted,
+  ref,
+  watch,
+  onBeforeUnmount,
+} from 'vue'
 import {
   NButton,
   NCard,
@@ -16,6 +24,7 @@ import {
   NSpace,
   NPopselect,
   NText,
+  NDropdown,
 } from 'naive-ui'
 import type { MessageRenderMessage } from 'naive-ui'
 
@@ -35,6 +44,7 @@ import { SvgIcon } from '@/components/common'
 import { useBasicLayout } from '@/hooks/useBasicLayout'
 import type { Theme } from '@/store/modules/app/helper'
 import modelSvg from '@/assets/icons/modelSvg.svg'
+import voiceSvg from '@/assets/icons/voicetype.svg'
 
 import {
   useAppStore,
@@ -50,6 +60,12 @@ const uploadUrl = ref(`${import.meta.env.VITE_GLOB_API_URL}/upload/file`)
 const useGlobalStore = useGlobalStoreWithOut()
 const authStore = useAuthStore()
 const route = useRoute()
+const uploadModels = [
+  'gpt-4-vision-preview',
+  'gpt-4o',
+  'gpt-4o-all',
+  'claude-3-5-sonnet-20240620',
+]
 let controller = new AbortController()
 
 const dialog = useDialog()
@@ -90,35 +106,35 @@ const themeOptions: {
 
 const videoOptions: {
   label: string
-  value: string
+  key: string
 }[] = [
   {
-    value: 'alloy',
+    key: 'alloy',
     label: 'alloy',
   },
   {
-    value: 'echo',
+    key: 'echo',
     label: 'echo',
   },
   {
-    value: 'fable',
+    key: 'fable',
     label: 'fable',
   },
   {
-    value: 'nova',
+    key: 'nova',
     label: 'nova',
   },
   {
-    value: 'onyx',
+    key: 'onyx',
     label: 'onyx',
   },
   {
-    value: 'shimmer',
+    key: 'shimmer',
     label: 'shimmer',
   },
 ]
 
-let currentVideo = ref('alloy')
+let voice = ref('alloy')
 const theme = computed(() => appStore.theme)
 
 const globaelConfig = computed(() => authStore.globalConfig)
@@ -233,48 +249,72 @@ function handleSignIn() {
   useGlobalStore.updateSignInDialog(true)
 }
 
-const audioRef = ref(null)
-const audioState = ref('Play')
-function hendleVideo(item) {
-  var data = JSON.stringify({
-    model: 'tts-1',
-    input: item.text,
-    voice: 'alloy',
-  })
-  axios({
-    method: 'post',
-    url: 'https://api.oneapi.dwyu.cn/v1/audio/speech',
-    headers: {
-      Authorization:
-        'Bearer sk-z726fTNvD1jzSBZ42e8dF919840b48A5820e4e5d9d4e70A4',
-      'Content-Type': 'application/json',
-    },
-    data: data,
-  })
-    .then(function (response) {
-      console.log('--response.data', response.data)
-      const audio = audioRef.value
-      const blob = new Blob([response.data], { type: 'audio/mpeg' })
-      if (!audio) return
-      audio.src = URL.createObjectURL(blob)
-      console.log(audio)
-      audio.load()
-      audio.play()
+// onBeforeUnmount(() => {
+//   // 判断音频是否正在播放
+//   if (player && !player.paused) {
+//     // 如果音频正在播放，那么停止播放
+//     player.pause()
+//     isResponseVideo.value = false
+//     isPlay.value = false
+//     player = null
+//   }
+// })
 
-      // if (audio.paused) {
-      //   audio.play()
-      //   audioState.value = 'Stop'
-      // } else {
-      //   audio.pause()
-      //   audio.currentTime = 0
-      //   audioState.value = 'Play'
-      // }
-    })
-    .catch(function (error) {
-      console.error('There was an error fetching the audio data', error)
-    })
-}
+// let isResponseVideo = ref(false)
+// let isPlay = ref(false)
+// let player = null
 
+// function hendleVideo(type, item) {
+//   isResponseVideo.value = true
+//   isPlay.value = true
+//   if (!player) {
+//     player = new window.Audio()
+//   }
+//   // 判断音频是否正在播放
+//   if (!player.paused || type === 'stop') {
+//     // 如果音频正在播放，那么停止播放
+//     player.pause()
+//     isResponseVideo.value = false
+//     isPlay.value = false
+//   } else {
+//     // 如果音频已经暂停或者停止，那么开始播放
+//     var data = JSON.stringify({
+//       model: 'tts-1',
+//       input: item.text,
+//       voice: voice.value,
+//     })
+//     axios({
+//       method: 'post',
+//       url: '中转地址',
+//       headers: {
+//         Authorization:
+//           'Bearer key密钥',
+//         'Content-Type': 'application/json',
+//       },
+//       responseType: 'arraybuffer', // 设置 responseType 为 'arraybuffer'
+//       data: data,
+//     })
+//       .then(async function (response) {
+//         if (!isResponseVideo.value) return
+//         const blob = new Blob([response.data], { type: 'audio/mpeg' })
+//         player.src = URL.createObjectURL(blob)
+//         player.load()
+//         player.play()
+//         // 监听音频播放结束事件
+//         player.onended = function () {
+//           isPlay.value = false
+//         }
+
+//         isResponseVideo.value = false
+//       })
+//       .catch(function (error) {
+//         isResponseVideo.value = false
+//         player.onended = null
+//         isPlay.value = false
+//         console.error('There was an error fetching the audio data', error)
+//       })
+//   }
+// }
 // 解析文件 gpt-4-all逆向
 let curFile: File | null
 
@@ -831,6 +871,11 @@ function onInputeTip() {
   nextTick(() => getTipsRefHeight())
 }
 
+function handleSelect(key) {
+  voice.value = key
+  ms.success(`切换语音模式成功，当前使用：${key}`)
+}
+
 onMounted(async () => {
   chatStore.queryChatPre()
 
@@ -898,7 +943,7 @@ onUnmounted(() => {
                 :imageUrl="item.imageUrl"
                 @regenerate="handleSubmit(index)"
                 @delete="handleDelete(item)"
-                @video="hendleVideo(item)"
+                :isPlay="isPlay"
               />
               <div class="sticky bottom-1 left-0 flex justify-center">
                 <NButton v-if="loading" @click="handleStop">
@@ -1051,6 +1096,24 @@ onUnmounted(() => {
             </template>
             切换模型
           </NTooltip>
+          <!-- <NDropdown
+            trigger="hover"
+            :options="videoOptions"
+            @select="handleSelect"
+          >
+            <NButton
+              icon-placement="left"
+              class="shrink0 flex h-8 w-8 items-center justify-center rounded border transition dark:border-neutral-700 dark:hover:bg-[#33373c]"
+              style="height: 2rem; padding: 0 8px"
+            >
+              <template #icon>
+                <span class="text-base text-slate-500 dark:text-slate-400">
+                  <img :src="voiceSvg" class="h-8" alt="" />
+                </span>
+              </template>
+              <span style="color: #3076fd">{{ voice }}</span>
+            </NButton>
+          </NDropdown> -->
         </div>
       </div>
       <div
@@ -1100,9 +1163,9 @@ onUnmounted(() => {
                   <NTooltip
                     v-if="
                       !dataBase64 &&
-                      (chatStore.activeConfig.modelInfo.model === 'gpt-4-all' ||
-                        chatStore.activeConfig.modelInfo.model ===
-                          'gpt-4-vision-preview')
+                      uploadModels.includes(
+                        chatStore.activeConfig.modelInfo.model
+                      )
                     "
                     trigger="hover"
                     placement="bottom-end"
@@ -1122,7 +1185,11 @@ onUnmounted(() => {
                             style="display: none"
                             :accept="
                               chatStore.activeConfig.modelInfo.model ===
-                              'gpt-4-vision-preview'
+                                'gpt-4-vision-preview' ||
+                              chatStore.activeConfig.modelInfo.model ===
+                                'gpt-4o' ||
+                              chatStore.activeConfig.modelInfo.model ===
+                                'claude-3-5-sonnet-20240620'
                                 ? 'image/*'
                                 : 'text/plain,image/*, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/pdf'
                             "
@@ -1233,10 +1300,6 @@ onUnmounted(() => {
         />
       </NCard>
     </NModal>
-
-    <!-- <audio ref="audioRef" controls>
-      <source type="audio/mpeg" />
-    </audio> -->
   </div>
 </template>
 

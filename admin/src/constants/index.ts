@@ -166,6 +166,7 @@ export const MODEL_LIST = [
   "gpt-3.5-turbo",
   "gpt-3.5-turbo-1106",
   "gpt-3.5-turbo-16k",
+  "gpt-3.5-turbo-instruct",
   "gpt-4",
   "gpt-4-0613",
   "gpt-4-32k",
@@ -174,10 +175,21 @@ export const MODEL_LIST = [
   "gpt-4-vision-preview",
   "gpt-4-all",
   "gpt-4-0125-preview",
-  'dall-e-3',
+  "gpt-4-turbo-2024-04-09",
+  "gpt-4-turbo-preview",
+  "gpt-4o",
+  "gpt-4o-2024-05-13",
+  "gpt-4o-all",
+  "dall-e-3",
   // claude
   "claude-2.0",
   "claude-2.1",
+  "claude-3.0",
+  "claude-3-5-sonnet-20240620",
+  "claude-3-haiku-20240307",
+  "claude-3-opus-20240229",
+  "claude-3-sonnet-20240229",
+  "claude-instant-1.2",
   // gemini
   "gemini-pro",
   // 百度文心
@@ -200,6 +212,15 @@ export const MODEL_LIST = [
   "360GPT_S2_V9",
   // 讯飞星火
   "SparkDesk",
+  "SparkDesk-v3.5",
+  // kimi
+  "kimi",
+  "kimi-128k",
+  "kimi-all",
+  //deepseek
+  "deepseek",
+  "deepseek-chat",
+  "deepseek-coder",
 ];
 
 // 模型列表 0 mj   1 Dall-e
@@ -284,42 +305,63 @@ export const MODELSMAP = {
 export const MODELSMAPLIST = {
   1: [
     "gpt-3.5-turbo",
-    "gpt-3.5-turbo-1106",
-    "gpt-3.5-turbo-16k",
-    "gpt-4",
-    "gpt-4-0613",
-    "gpt-4-32k",
-    "gpt-4-32k-0613",
-    "gpt-4-1106-preview",
-    "gpt-4-vision-preview",
-    "gpt-4-all",
-    "gpt-4-0125-preview",
-    'dall-e-3',
-    // claude
-    "claude-2.0",
-    "claude-2.1",
-    // gemini
-    "gemini-pro",
-    // 百度文心
-    "ERNIE-Bot",
-    "ERNIE-Bot-4",
-    "ERNIE-Bot-turbo",
-    // 阿里通义
-    "qwen-turbo",
-    "qwen-plus",
-    "qwen-max",
-    "qwen-max-lingcontext",
-    // 腾讯混元
-    "hunyuan",
-    // 清华智谱
-    "chatglm_turbo",
-    "chatglm_pro",
-    "chatglm_std",
-    "chatglm_lite",
-    // 360 智脑
-    "360GPT_S2_V9",
-    // 讯飞星火
-    "SparkDesk",
+  "gpt-3.5-turbo-1106",
+  "gpt-3.5-turbo-16k",
+  "gpt-3.5-turbo-instruct",
+  "gpt-4",
+  "gpt-4-0613",
+  "gpt-4-32k",
+  "gpt-4-32k-0613",
+  "gpt-4-1106-preview",
+  "gpt-4-vision-preview",
+  "gpt-4-all",
+  "gpt-4-0125-preview",
+  "gpt-4-turbo-2024-04-09",
+  "gpt-4-turbo-preview",
+  "gpt-4o",
+  "gpt-4o-2024-05-13",
+  "gpt-4o-all",
+  "dall-e-3",
+  // claude
+  "claude-2.0",
+  "claude-2.1",
+  "claude-3.0",
+  "claude-3-5-sonnet-20240620",
+  "claude-3-haiku-20240307",
+  "claude-3-opus-20240229",
+  "claude-3-sonnet-20240229",
+  "claude-instant-1.2",
+  // gemini
+  "gemini-pro",
+  // 百度文心
+  "ERNIE-Bot",
+  "ERNIE-Bot-4",
+  "ERNIE-Bot-turbo",
+  // 阿里通义
+  "qwen-turbo",
+  "qwen-plus",
+  "qwen-max",
+  "qwen-max-lingcontext",
+  // 腾讯混元
+  "hunyuan",
+  // 清华智谱
+  "chatglm_turbo",
+  "chatglm_pro",
+  "chatglm_std",
+  "chatglm_lite",
+  // 360 智脑
+  "360GPT_S2_V9",
+  // 讯飞星火
+  "SparkDesk",
+  "SparkDesk-v3.5",
+  // kimi
+  "kimi",
+  "kimi-128k",
+  "kimi-all",
+  //deepseek
+  "deepseek",
+  "deepseek-chat",
+  "deepseek-coder",
   ],
   2: [
     "ERNIE-Bot",

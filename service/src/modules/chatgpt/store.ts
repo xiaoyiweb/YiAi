@@ -97,7 +97,7 @@ export class NineStore implements NineStoreInterface {
     let nextNumTokensEstimate = 0;
     // messages.push({ role: 'system', content: systemMessage, name })
     if (systemMessage) {
-      const specialModels = ['gemini-pro', 'ERNIE','hunyuan'];
+      const specialModels = ['gemini-pro', 'ERNIE', 'hunyuan'];
       const isSpecialModel = activeModel && specialModels.some((specialModel) => activeModel.includes(specialModel));
       if (isSpecialModel) {
         messages.push({ role: 'user', content: systemMessage, name });
@@ -108,8 +108,9 @@ export class NineStore implements NineStoreInterface {
     }
     const systemMessageOffset = messages.length;
     let round = 0;
+    const uploadModels = ['gpt-4-vision-preview', 'gpt-4o', 'claude-3-5-sonnet-20240620'];
     // 特殊处理 gpt-4-vision-preview 模型
-    if (activeModel === 'gpt-4-vision-preview' && imageUrl) {
+    if (uploadModels.includes(activeModel) && imageUrl) {
       const content = [
         {
           type: 'text',
@@ -123,14 +124,22 @@ export class NineStore implements NineStoreInterface {
         },
       ];
       messages.push({ role: 'user', content: content, name });
+    } else if (uploadModels.includes(activeModel) && !imageUrl) {
+      const content = [
+        {
+          type: 'text',
+          text: text,
+        },
+      ];
+      messages.push({ role: 'user', content: content, name });
     } else {
       // 处理 gpt-4-all 模型
-      if (model === 'gpt-4-all' && imageUrl) {
+      if ((model === 'gpt-4-all' || model === 'gpt-4o-all') && imageUrl) {
         text = imageUrl + '\n' + text;
       }
       messages.push({ role: 'user', content: text, name });
     }
-    // Logger.debug(`发送的参数：${messages}`)
+    // Logger.debug(`发送的参数：${messages}`);
 
     let nextMessages = messages;
     do {
@@ -148,12 +157,18 @@ export class NineStore implements NineStoreInterface {
 
       // 特别处理包含 imageUrl 的消息
       if (imageUrl) {
-        if (activeModel === 'gpt-4-vision-preview') {
-          content = [
-            { type: 'text', text: text },
-            { type: 'image_url', image_url: { url: imageUrl } },
-          ];
+        if (uploadModels.includes(activeModel)) {
+          if (role === 'assistant') {
+            content = [{ type: 'text', text: text }];
+          } else {
+            content = [
+              { type: 'text', text: text },
+              { type: 'image_url', image_url: { url: imageUrl } },
+            ];
+          }
         }
+      } else if (!imageUrl && uploadModels.includes(activeModel)) {
+        content = [{ type: 'text', text: text }];
       }
 
       /* 将本轮消息插入到列表中 */
