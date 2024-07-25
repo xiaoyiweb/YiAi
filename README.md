@@ -1,7 +1,7 @@
 >本项目基于nineai 2.4.2 二次开发。
 >本项目仅供学习及参考，不可商用，由此造成的后果概不负责。
 >整合包位于 **YiAiQuickDeploy** 目录。
->API中转商推荐：[ChatfireAPI](https://api.chatllm.vip) , 支持国内外热门大模型，支持mj、sd、suno、luma等等，费率：国内0.5:1，国外1:1，量大可咨询优惠
+>API中转商推荐：[ChatfireAPI](https://api.chatllm.cn) , 支持国内外热门大模型，支持mj、sd、suno、luma等等，费率：国内0.5:1，国外1:1，量大可咨询优惠
 
 # Yi - Ai 更新日志
 
